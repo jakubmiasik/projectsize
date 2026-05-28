@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabric Project Sizing</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=zodiak@400,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-2:.5rem; --space-3:.75rem; --space-4:1rem; --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:2.5rem; --space-12:3rem;
+      --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9; --color-surface-offset:#f3f0ec; --color-border:#d4d1ca; --color-divider:#dcd9d5; --color-text:#28251d; --color-text-muted:#686760; --color-primary:#01696f; --color-primary-hover:#0c4e54; --color-primary-highlight:#cedcd8; --radius-md:.5rem; --radius-lg:.75rem; --radius-xl:1rem; --shadow-sm:0 1px 2px rgba(40,37,29,.06); --shadow-md:0 10px 30px rgba(40,37,29,.08); --font-body:'Satoshi',Inter,sans-serif; --font-display:'Zodiak',Georgia,serif; --content:1200px;
+    }
+    [data-theme="dark"] { --color-bg:#171614; --color-surface:#1c1b19; --color-surface-2:#201f1d; --color-surface-offset:#22211f; --color-border:#393836; --color-divider:#262523; --color-text:#e4e1da; --color-text-muted:#b2aea5; --color-primary:#4f98a3; --color-primary-hover:#227f8b; --color-primary-highlight:#313b3b; --shadow-sm:0 1px 2px rgba(0,0,0,.2); --shadow-md:0 16px 40px rgba(0,0,0,.35); }
+    *{box-sizing:border-box} body{margin:0;font-family:var(--font-body);font-size:var(--text-base);line-height:1.55;background:var(--color-bg);color:var(--color-text)} h1,h2,h3,p{margin:0} button,input{font:inherit} .container{width:min(calc(100% - 2rem),var(--content));margin:auto}
+    .header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--color-bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-divider)}
+    .header-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}.brand{display:flex;align-items:center;gap:.8rem;font-weight:700}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary),#006494);display:grid;place-items:center;color:#fff}
+    .theme-toggle{width:44px;height:44px;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface);cursor:pointer}
+    .hero{padding:var(--space-12) 0 var(--space-8)} .hero-grid,.app-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--space-8)} .eyebrow{display:inline-block;padding:.35rem .75rem;border-radius:999px;background:var(--color-primary-highlight);color:var(--color-primary);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:var(--space-4)}
+    .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:12ch;margin-bottom:var(--space-4)} .hero p{color:var(--color-text-muted);max-width:65ch}
+    .card,.panel,.result{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .card,.panel,.result{padding:var(--space-6)}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-5)} .stat{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .stat strong{display:block;font-size:var(--text-lg)}
+    .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-5)} .section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}.section-copy{color:var(--color-text-muted);margin-bottom:var(--space-5)}
+    .formula{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset);color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6)}
+    .group{display:grid;gap:var(--space-4);margin-bottom:var(--space-8)} .group h3{font-size:var(--text-lg)} .options{display:grid;gap:var(--space-3)} .option{position:relative}
+    .option input{position:absolute;opacity:0;inset:0} .option label{display:block;padding:1rem 1rem 1rem 3.35rem;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);cursor:pointer;transition:.18s ease}
+    .option label::before{content:"";position:absolute;left:1rem;top:1rem;width:1.1rem;height:1.1rem;border-radius:999px;border:2px solid #8e8b84} .option input:checked + label{border-color:var(--color-primary);background:color-mix(in srgb,var(--color-primary-highlight) 55%,var(--color-surface-2))} .option input:checked + label::before{background:var(--color-primary);border-color:var(--color-primary);box-shadow:inset 0 0 0 3px var(--color-surface)}
+    .points{display:inline-block;min-width:4.2rem;margin-right:.4rem;color:var(--color-primary);font-weight:700} .sub{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-top:.2rem}
+    .actions{display:flex;gap:var(--space-3);flex-wrap:wrap} .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer} .btn-primary{background:var(--color-primary);color:#fff;border-color:var(--color-primary)} .btn-primary:hover{background:var(--color-primary-hover)}
+    .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs{background:#e7e5df;color:#4f4a3f}.s{background:#d7e5cf;color:#2e5c10}.m{background:#e8dfc8;color:#8a5b00}.l{background:#ead5c8;color:#964219}.xl{background:#e6d2df;color:#7d1e5e}
+    .score{font-size:clamp(2.4rem,1.7rem + 3vw,4rem);line-height:1;font-weight:700} .muted{color:var(--color-text-muted)} .range{height:10px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden}.range > div{height:100%;width:0;background:linear-gradient(90deg,#9ea39a,#5ea07e,#d19900,#bb653b,#a86fdf)}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)} .mini{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .mini span{display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-muted)}
+    .score-table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .score-table th,.score-table td{padding:.65rem .4rem;border-bottom:1px solid var(--color-divider);vertical-align:top;text-align:left} .score-table th{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-muted)}
+    ul.clean{display:grid;gap:var(--space-3);padding:0;margin:0} ul.clean li{list-style:none;padding:.85rem 1rem;border-radius:var(--radius-lg);background:var(--color-surface-offset)}
+    @media (max-width: 980px){.hero-grid,.app-grid{grid-template-columns:1fr}.result{position:static}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.stats,.mini-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand"><div class="logo">F</div><span>Fabric Project Sizing</span></div>
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch theme"></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Adjusted scorecard</span>
+          <h1>Revised T-shirt sizing for Microsoft Fabric projects</h1>
+          <p>This version applies the suggested changes: normalized scoring, clearer non-overlapping ranges, removal of XXL, and final size based on the total calculated score instead of rigid row-by-row class assignment.</p>
+        </div>
+        <aside class="card">
+          <h2>Model summary</h2>
+          <div class="stats">
+            <div class="stat"><strong>10</strong><span>Sections</span></div>
+            <div class="stat"><strong>5</strong><span>Sizes: XS to XL</span></div>
+            <div class="stat"><strong>40-200</strong><span>Total score range</span></div>
+            <div class="stat"><strong>1 rule</strong><span>Sum points, then classify</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="app container">
+      <div class="app-grid">
+        <form class="panel" id="form">
+          <h2 class="section-title">Questionnaire</h2>
+          <p class="section-copy">Choose one option per section. Each option has explicit points. The overall score determines the suggested project size.</p>
+          <div class="formula"><strong>Overall score</strong> = sum of selected points across all 10 sections. Suggested size bands: XS 40-69, S 70-94, M 95-124, L 125-154, XL 155+.</div>
+          <div id="questions"></div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="calculate">Calculate size</button>
+            <button type="reset" class="btn" id="reset">Reset</button>
+          </div>
+        </form>
+
+        <aside class="result">
+          <div>
+            <div id="badge" class="badge s">S · Small</div>
+            <div id="score" class="score">85</div>
+            <p id="narrative" class="muted">A focused Fabric implementation with limited complexity and a standard delivery model.</p>
+          </div>
+
+          <div>
+            <h3>Total score position</h3>
+            <div class="range"><div id="bar"></div></div>
+          </div>
+
+          <div class="mini-grid" id="highlights"></div>
+
+          <div>
+            <h3>Section scores</h3>
+            <table class="score-table">
+              <thead><tr><th>Section</th><th>Selected</th><th>Points</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+
+          <div>
+            <h3>Suggested interpretation</h3>
+            <ul class="clean" id="summary"></ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const sections = [
+      { id:'sources', title:'Source systems', options:[
+        {label:'1 source', points:2},
+        {label:'2-3 sources', points:5},
+        {label:'4-8 sources', points:10},
+        {label:'9-15 sources', points:15},
+        {label:'16+ sources', points:20},
+      ]},
+      { id:'objects', title:'Objects to ingest', options:[
+        {label:'1-5 objects', points:2},
+        {label:'6-15 objects', points:5},
+        {label:'16-50 objects', points:10},
+        {label:'51-150 objects', points:15},
+        {label:'151-400 objects', points:18},
+        {label:'400+ objects', points:20},
+      ]},
+      { id:'volume', title:'Data volume', options:[
+        {label:'Less than 50 GB', points:2},
+        {label:'50-200 GB', points:5},
+        {label:'200 GB-2 TB', points:10},
+        {label:'2-20 TB', points:15},
+        {label:'20+ TB', points:20},
+      ]},
+      { id:'transform', title:'Transformation complexity', options:[
+        {label:'Easy', points:5, sub:'Standardization, joins, light business rules'},
+        {label:'Low', points:10, sub:'Moderate conformance and reusable logic'},
+        {label:'Moderate', points:15, sub:'SCDs, reconciliation, late-arriving logic'},
+        {label:'Complex', points:20, sub:'Cross-domain harmonization or advanced orchestration'},
+      ]},
+      { id:'governance', title:'Governance and security', options:[
+        {label:'Basic workspace governance', points:5},
+        {label:'RLS, certified items, deployment controls', points:10},
+        {label:'Multi-workspace, lineage, labels, domain design', points:15},
+        {label:'Compliance-heavy operating model', points:20},
+      ]},
+      { id:'semantic', title:'Semantic model complexity', options:[
+        {label:'Easy', points:5, sub:'Single model, few measures'},
+        {label:'Low', points:10, sub:'Several subject areas, moderate measures'},
+        {label:'Moderate', points:15, sub:'Shared semantic layer, RLS or optimization'},
+        {label:'Complex', points:20, sub:'Multiple enterprise models and advanced calculations'},
+      ]},
+      { id:'gold', title:'Gold layer complexity', options:[
+        {label:'1-5 objects', points:5},
+        {label:'6-15 objects', points:10},
+        {label:'16-40 objects', points:15},
+        {label:'41-100 objects', points:18},
+        {label:'100+ objects', points:20},
+      ]},
+      { id:'latency', title:'Latency expectations', options:[
+        {label:'Daily', points:5},
+        {label:'Intraday', points:10},
+        {label:'Hourly', points:15},
+        {label:'Streaming', points:20},
+      ]},
+      { id:'methodology', title:'Target methodology', options:[
+        {label:'Simple medallion', points:5},
+        {label:'Medallion + Kimball', points:10},
+        {label:'Hybrid medallion + Data Vault', points:15},
+        {label:'Multiple patterns across domains', points:20},
+      ]},
+      { id:'delivery', title:'Delivery and stakeholders', options:[
+        {label:'Single unit', points:5},
+        {label:'Several stakeholders', points:10},
+        {label:'Cross-functional', points:15},
+        {label:'Large transformation program', points:20},
+      ]},
+    ];
+
+    const interpretations = {
+      XS: [
+        'Pilot, PoC, or one very narrow use case.',
+        'Basic Fabric setup with a small medallion flow.',
+        'Low governance and limited semantic-serving complexity.'
+      ],
+      S: [
+        'Small departmental implementation with standard patterns.',
+        'Usually one main semantic area and controlled stakeholder set.',
+        'Good fit for focused delivery with modest governance.'
+      ],
+      M: [
+        'Multi-use-case domain implementation with reusable patterns.',
+        'Moderate governance, several curated outputs, and stronger semantic design.',
+        'Typical size for a serious but still bounded Fabric program.'
+      ],
+      L: [
+        'Broad multi-domain delivery with substantial data engineering and governance effort.',
+        'Likely includes stronger operating model, security design, and curated gold outputs.',
+        'Needs structured planning, ownership, and delivery governance.'
+      ],
+      XL: [
+        'Enterprise-scale transformation with high architectural and organizational complexity.',
+        'Often combines advanced governance, multiple domains, and hybrid design patterns.',
+        'Treat as a phased program rather than a single compact project.'
+      ]
+    };
+
+    function getTier(score){
+      if(score <= 69) return 'XS';
+      if(score <= 94) return 'S';
+      if(score <= 124) return 'M';
+      if(score <= 154) return 'L';
+      return 'XL';
+    }
+
+    function getNarrative(tier){
+      return {
+        XS:'A very small Fabric initiative, usually a pilot or tightly scoped proof of value.',
+        S:'A focused Fabric implementation with limited complexity and a standard delivery model.',
+        M:'A meaningful Fabric delivery with several moving parts, repeatable patterns, and moderate architecture depth.',
+        L:'A large Fabric initiative with broad scope, heavier governance, and substantial semantic and engineering effort.',
+        XL:'An enterprise-scale Fabric transformation with high complexity across platform, governance, and delivery model.'
+      }[tier];
+    }
+
+    const questionRoot = document.getElementById('questions');
+    sections.forEach((section, idx) => {
+      const defaultIndex = Math.min(1, section.options.length - 1);
+      const block = document.createElement('section');
+      block.className = 'group';
+      block.innerHTML = `
+        <h3>${idx + 1}. ${section.title}</h3>
+        <div class="options">
+          ${section.options.map((opt, i) => `
+            <div class="option">
+              <input type="radio" name="${section.id}" id="${section.id}-${i}" value="${opt.points}" ${i === defaultIndex ? 'checked' : ''}>
+              <label for="${section.id}-${i}">
+                <span class="points">${opt.points} pts</span>${opt.label}
+                ${opt.sub ? `<span class="sub">${opt.sub}</span>` : ''}
+              </label>
+            </div>
+          `).join('')}
+        </div>`;
+      questionRoot.appendChild(block);
+    });
+
+    function calculate(){
+      const chosen = [];
+      let total = 0;
+      sections.forEach(section => {
+        const input = document.querySelector(`input[name="${section.id}"]:checked`);
+        const points = Number(input.value);
+        const option = section.options.find(o => o.points === points && input.nextElementSibling.textContent.includes(o.label));
+        total += points;
+        chosen.push({ section: section.title, label: option ? option.label : input.nextElementSibling.innerText.trim(), points });
+      });
+
+      const tier = getTier(total);
+      document.getElementById('score').textContent = total;
+      document.getElementById('narrative').textContent = getNarrative(tier);
+      const badge = document.getElementById('badge');
+      badge.className = 'badge ' + tier.toLowerCase();
+      badge.textContent = `${tier} · ${ {XS:'Extra small',S:'Small',M:'Medium',L:'Large',XL:'Extra large'}[tier] }`;
+      document.getElementById('bar').style.width = Math.min(100, (total / 200) * 100) + '%';
+
+      document.getElementById('rows').innerHTML = chosen.map(c => `<tr><td>${c.section}</td><td>${c.label}</td><td>${c.points}</td></tr>`).join('');
+      document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li>${item}</li>`).join('');
+
+      const top = [...chosen].sort((a,b) => b.points - a.points).slice(0,4);
+      document.getElementById('highlights').innerHTML = top.map(item => `<div class="mini"><span>${item.section}</span><strong>${item.points} pts</strong></div>`).join('');
+    }
+
+    document.getElementById('calculate').addEventListener('click', calculate);
+    document.getElementById('form').addEventListener('change', calculate);
+    document.getElementById('reset').addEventListener('click', () => setTimeout(calculate, 0));
+
+    (function(){
+      const btn = document.querySelector('[data-theme-toggle]');
+      const root = document.documentElement;
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const draw = () => {
+        root.setAttribute('data-theme', theme);
+        btn.innerHTML = theme === 'dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+      };
+      btn.addEventListener('click',()=>{ theme = theme === 'dark' ? 'light' : 'dark'; draw(); });
+      draw();
+    })();
+
+    calculate();
+  </script>
+</body>
+</html>
