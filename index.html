@@ -286,7 +286,7 @@
     }
 
     document.getElementById('calculate').addEventListener('click', calculate);
-    document.getElementById('reset').addEventListener('click', () => setTimeout(hideResults, 0));
+    document.getElementById('form').addEventListener('reset', hideResults);
 
     (function(){
       const btn = document.querySelector('[data-theme-toggle]');
