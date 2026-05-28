@@ -64,10 +64,10 @@
         <form class="panel" id="form">
           <h2 class="section-title">Questionnaire</h2>
           <p class="section-copy">Select the best-fit option in each area, then calculate the overall project size.</p>
-          <div class="meta-list" aria-label="Questionnaire details">
-            <span class="meta-label">Selection: 1 option per section</span>
-            <span class="meta-label">Scoring: add all selected points</span>
-            <span class="meta-label">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</span>
+          <div class="meta-list" aria-label="Questionnaire details" role="list">
+            <span class="meta-label" role="listitem">Selection: 1 option per section</span>
+            <span class="meta-label" role="listitem">Scoring: add all selected points</span>
+            <span class="meta-label" role="listitem">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</span>
           </div>
           <div id="questions"></div>
           <div class="actions">
@@ -258,7 +258,7 @@
       appGrid.classList.remove('has-result');
     }
 
-    function calculate(){
+    function calculate(showPanel = true){
       const chosen = [];
       let total = 0;
       sections.forEach(section => {
@@ -282,11 +282,18 @@
 
       const top = [...chosen].sort((a,b) => b.points - a.points).slice(0,4);
       document.getElementById('highlights').innerHTML = top.map(item => `<div class="mini"><span>${item.section}</span><strong>${item.points} pts</strong></div>`).join('');
-      showResults();
+      if(showPanel){
+        showResults();
+      }
     }
 
     document.getElementById('calculate').addEventListener('click', calculate);
-    document.getElementById('form').addEventListener('reset', hideResults);
+    document.getElementById('form').addEventListener('reset', () => {
+      requestAnimationFrame(() => {
+        calculate(false);
+        hideResults();
+      });
+    });
 
     (function(){
       const btn = document.querySelector('[data-theme-toggle]');
