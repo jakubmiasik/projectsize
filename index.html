@@ -26,7 +26,7 @@
     .card,.panel,.result{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .card,.panel,.result{padding:var(--space-6)}
     .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-5)} .stat{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .stat strong{display:block;font-size:var(--text-lg)}
     .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start} .result[hidden]{display:none}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}.section-copy{color:var(--color-text-muted);margin-bottom:var(--space-4)}
-    .meta-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-6)} .meta-label{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-text-muted);font-size:var(--text-sm)}
+    .meta-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0 0 var(--space-6);padding:0;list-style:none} .meta-label{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-text-muted);font-size:var(--text-sm)}
     .group{display:grid;gap:var(--space-4);margin-bottom:var(--space-8)} .group h3{font-size:var(--text-lg)} .options{display:grid;gap:var(--space-3)} .option{position:relative}
     .option input{position:absolute;opacity:0;inset:0} .option label{display:block;padding:1rem 1rem 1rem 3.35rem;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);cursor:pointer;transition:.18s ease}
     .option label::before{content:"";position:absolute;left:1rem;top:1rem;width:1.1rem;height:1.1rem;border-radius:999px;border:2px solid #8e8b84} .option input:checked + label{border-color:var(--color-primary);background:color-mix(in srgb,var(--color-primary-highlight) 55%,var(--color-surface-2))} .option input:checked + label::before{background:var(--color-primary);border-color:var(--color-primary);box-shadow:inset 0 0 0 3px var(--color-surface)}
@@ -64,11 +64,11 @@
         <form class="panel" id="form">
           <h2 class="section-title">Questionnaire</h2>
           <p class="section-copy">Select the best-fit option in each area, then calculate the overall project size.</p>
-          <div class="meta-list" aria-label="Questionnaire details" role="list">
-            <span class="meta-label" role="listitem">Selection: 1 option per section</span>
-            <span class="meta-label" role="listitem">Scoring: add all selected points</span>
-            <span class="meta-label" role="listitem">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</span>
-          </div>
+          <ul class="meta-list" aria-label="Questionnaire details">
+            <li class="meta-label">Selection: 1 option per section</li>
+            <li class="meta-label">Scoring: add all selected points</li>
+            <li class="meta-label">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</li>
+          </ul>
           <div id="questions"></div>
           <div class="actions">
             <button type="button" class="btn btn-primary" id="calculate">Calculate size</button>
