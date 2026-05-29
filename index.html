@@ -17,26 +17,29 @@
       --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9; --color-surface-offset:#f3f0ec; --color-border:#d4d1ca; --color-divider:#dcd9d5; --color-text:#28251d; --color-text-muted:#6d695e; --color-primary:#01696f; --color-primary-strong:#014f54; --color-accent:#5f4abf; --font-display:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --font-body:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --radius-lg:1rem; --radius-xl:1.5rem; --shadow-sm:0 10px 30px rgba(17,24,39,.06);
     }
     [data-theme="dark"] { --color-bg:#171614; --color-surface:#1c1b19; --color-surface-2:#201f1d; --color-surface-offset:#22211f; --color-border:#393836; --color-divider:#262523; --color-text:#e4e1d8; --color-text-muted:#ada89d; --color-primary:#39a4aa; --color-primary-strong:#57c2c7; --color-accent:#9482f5; --shadow-sm:0 16px 40px rgba(0,0,0,.32); }
-    *{box-sizing:border-box} body{margin:0;font-family:var(--font-body);font-size:var(--text-base);line-height:1.55;background:var(--color-bg);color:var(--color-text)} h1,h2,h3,p{margin:0} button,input,label{font:inherit} .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
+    *{box-sizing:border-box} body{margin:0;font-family:var(--font-body);font-size:var(--text-base);line-height:1.55;background:var(--color-bg);color:var(--color-text)} h1,h2,h3,h4,p{margin:0} button,input,label{font:inherit} .container{width:min(1120px,calc(100% - 2rem));margin-inline:auto}
     .header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--color-bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-divider)}
     .header-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}.brand{display:flex;align-items:center;gap:.8rem;font-weight:700}.logo{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));color:white;font-weight:800}.theme-toggle{width:44px;height:44px;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface);cursor:pointer}
-    .hero{padding:var(--space-12) 0 var(--space-8)} .hero-grid{display:grid;grid-template-columns:1fr;gap:var(--space-8)} .app-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr);gap:var(--space-6);align-items:start}.app-grid.has-result{grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)}
+    .hero{padding:var(--space-12) 0 var(--space-8)} .hero-grid{display:grid;grid-template-columns:1fr;gap:var(--space-8)} .app-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(340px,.7fr);gap:var(--space-6);align-items:start}.app-grid.has-result{grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr)}
     .eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:var(--space-3);padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-primary);font-size:var(--text-sm);font-weight:700}
-    .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:none;width:100%;margin-bottom:var(--space-4)} .hero p{color:var(--color-text-muted);max-width:78ch}.hero-copy{display:grid;gap:var(--space-4)}
+    .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:none;width:100%;margin-bottom:var(--space-4)} .hero p,.section-copy,.project-copy{color:var(--color-text-muted);max-width:none;width:100%}.hero-copy{display:grid;gap:var(--space-4)}
     .panel,.result{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);padding:var(--space-6)}
-    .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start} .result[hidden]{display:none}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}.section-copy{color:var(--color-text-muted);margin-bottom:var(--space-4)}
+    .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start;max-height:calc(100vh - 6rem);overflow:hidden} .result[hidden]{display:none}.result-scroll{display:grid;gap:var(--space-4);overflow-y:auto;padding-right:.35rem}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}
     .meta-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0 0 var(--space-6);padding:0;list-style:none} .meta-label{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm);color:var(--color-text-muted)}
+    .project-intro{display:grid;gap:var(--space-3);margin-bottom:var(--space-6)}
     .group{display:grid;gap:var(--space-4);margin-bottom:var(--space-8)} .group h3{font-size:var(--text-lg)} .options{display:grid;gap:var(--space-3)} .option{position:relative}
     .option input{position:absolute;opacity:0;inset:0} .option label{display:block;padding:1rem 1rem 1rem 3.35rem;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);cursor:pointer;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}.option label:hover{border-color:var(--color-primary)}
     .option label::before{content:"";position:absolute;left:1rem;top:1rem;width:1.1rem;height:1.1rem;border-radius:999px;border:2px solid #8e8b84} .option input:checked + label{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-primary) 18%,transparent);transform:translateY(-1px)} .option input:checked + label::before{background:radial-gradient(circle at 50% 50%,var(--color-primary) 0 45%,transparent 46% 100%);border-color:var(--color-primary)}
     .option-title{display:block;font-weight:700;margin-bottom:.2rem}.sub{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-top:.2rem}
     .actions{display:flex;gap:var(--space-3);flex-wrap:wrap} .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer}.btn-primary{background:var(--color-primary);border-color:var(--color-primary);color:white;font-weight:700}
     .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs{background:#e7e5df;color:#4f4a3f}.s{background:#ddf2f3;color:#12585d}.m{background:#e6ebff;color:#3c4db1}.l{background:#f8e9d6;color:#92591a}.xl{background:#f4dcdc;color:#9b2f2f}
-    .score{font-size:clamp(2.4rem,1.7rem + 3vw,4rem);line-height:1;font-weight:700} .muted{color:var(--color-text-muted)} .range{height:10px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));width:0}
+    .score-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .score-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .score-card span{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:.35rem}.score{font-size:clamp(2.1rem,1.6rem + 2vw,3.3rem);line-height:1;font-weight:700}
+    .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-3);align-items:center} .buffer-input{width:92px;padding:.6rem .7rem;border:1px solid var(--color-border);border-radius:.85rem;background:var(--color-surface);color:var(--color-text)} .buffer-note{font-size:var(--text-sm);color:var(--color-text-muted)}
+    .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative}.range{position:relative;height:14px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));width:0}.tier-marker{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--color-text-muted);opacity:.7}.tier-marker.current{background:var(--color-primary);opacity:1}.tier-label{display:flex;justify-content:space-between;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted)}
     .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)} .mini{padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .mini span{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:.2rem}
     .score-table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .score-table th,.score-table td{padding:.65rem .4rem;border-bottom:1px solid var(--color-divider);vertical-align:top;text-align:left} .score-table th:last-child,.score-table td:last-child{text-align:right}
     ul.clean{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:0;margin:0} ul.clean li{list-style:none;padding:.55rem .85rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm)}
-    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:static}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid{grid-template-columns:1fr}}
+    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:static;max-height:none}.result-scroll{overflow:visible;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -53,7 +56,7 @@
         <div class="hero-copy">
           <span class="eyebrow">Scorecard</span>
           <h1>T-shirt sizing for Microsoft Fabric projects</h1>
-          <p>This scorecard helps estimate the likely size of a Microsoft Fabric implementation by combining scope, engineering complexity, governance requirements, semantic modeling, and delivery expectations into a single sizing view.</p>
+          <p>This scorecard helps estimate the likely size of a Microsoft Fabric implementation by combining scope, engineering complexity, governance requirements, semantic modeling, reporting needs, and delivery expectations into a single sizing view.</p>
           <p>It is intended as an early planning tool for shaping conversations about delivery effort, sequencing, stakeholder alignment, and the level of architecture and platform design that may be required before detailed estimation begins.</p>
         </div>
       </div>
@@ -62,11 +65,14 @@
     <section class="app container">
       <div class="app-grid">
         <form class="panel" id="form">
-          <h2 class="section-title">Questionnaire</h2>
-          <p class="section-copy">Select the best-fit option in each area, then calculate the overall project size.</p>
+          <div class="project-intro">
+            <h2 class="section-title">Project estimator</h2>
+            <p class="project-copy">Use the questionnaire below to describe the anticipated scope of your Fabric implementation. Each section contributes a hidden weighted value to the total estimate, helping you understand the likely project tier and how close the initiative is to the next level of complexity.</p>
+          </div>
           <ul class="meta-list" aria-label="Questionnaire details">
             <li class="meta-label">Selection: 1 option per section</li>
             <li class="meta-label">Scoring: hidden weighted values</li>
+            <li class="meta-label">Buffer: optional uplift on total score</li>
             <li class="meta-label">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</li>
           </ul>
           <div id="questions"></div>
@@ -77,30 +83,68 @@
         </form>
 
         <aside class="result" id="result" hidden aria-hidden="true">
-          <div>
-            <div id="badge" class="badge s">S · Small</div>
-            <div id="score" class="score">85</div>
-            <p id="narrative" class="muted">A focused Fabric implementation with limited complexity and a standard delivery model.</p>
-          </div>
+          <div class="result-scroll">
+            <div>
+              <div id="badge" class="badge s">S · Small</div>
+            </div>
 
-          <div>
-            <h3>Total score position</h3>
-            <div class="range"><div id="bar"></div></div>
-          </div>
+            <div class="score-pair">
+              <div class="score-card">
+                <span>Initial score</span>
+                <div id="score-base" class="score">85</div>
+              </div>
+              <div class="score-card">
+                <span>Score with buffer</span>
+                <div id="score-buffered" class="score">85</div>
+              </div>
+            </div>
 
-          <div class="mini-grid" id="highlights"></div>
+            <div class="buffer-box">
+              <div class="buffer-row">
+                <div>
+                  <h3>Safety buffer</h3>
+                  <p class="buffer-note">Add an optional percentage uplift to reflect delivery uncertainty, dependencies, or planned contingency.</p>
+                </div>
+                <label>
+                  <input id="buffer" class="buffer-input" type="number" min="0" max="100" step="5" value="0" />
+                  <span class="buffer-note">%</span>
+                </label>
+              </div>
+              <p id="buffer-summary" class="muted">No safety buffer applied.</p>
+            </div>
 
-          <div>
-            <h3>Section selections</h3>
-            <table class="score-table">
-              <thead><tr><th>Section</th><th>Selected</th><th>Weight</th></tr></thead>
-              <tbody id="rows"></tbody>
-            </table>
-          </div>
+            <div>
+              <p id="narrative" class="muted">A focused Fabric implementation with limited complexity and a standard delivery model.</p>
+            </div>
 
-          <div>
-            <h3>Suggested interpretation</h3>
-            <ul class="clean" id="summary"></ul>
+            <div class="range-wrap">
+              <h3>Total score position</h3>
+              <div class="range-scale">
+                <div class="range">
+                  <div id="bar"></div>
+                  <div id="next-tier-marker" class="tier-marker"></div>
+                </div>
+              </div>
+              <div class="tier-label">
+                <span id="current-tier-note">Current tier: S</span>
+                <span id="next-tier-note">Next tier starts at 95</span>
+              </div>
+            </div>
+
+            <div class="mini-grid" id="highlights"></div>
+
+            <div>
+              <h3>Section selections</h3>
+              <table class="score-table">
+                <thead><tr><th>Section</th><th>Selected</th><th>Weight</th></tr></thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+
+            <div>
+              <h3>Suggested interpretation</h3>
+              <ul class="clean" id="summary"></ul>
+            </div>
           </div>
         </aside>
       </div>
@@ -154,6 +198,12 @@
         {label:'Low', points:10, sub:'Several subject areas with a moderate measure set.'},
         {label:'Moderate', points:15, sub:'Shared semantic layer, RLS, or optimization considerations.'},
         {label:'Complex', points:20, sub:'Multiple enterprise models with advanced calculations and reuse.'},
+      ])},
+      { id:'reports', title:'Power BI reports', options: withDefaultChoices([
+        {label:'1-3 reports', points:5, sub:'A very small reporting layer with a few focused outputs.'},
+        {label:'4-10 reports', points:10, sub:'A moderate reporting scope supporting a small stakeholder group.'},
+        {label:'11-25 reports', points:15, sub:'A broader report estate with more design and governance effort.'},
+        {label:'26+ reports', points:20, sub:'A large reporting portfolio with significant coordination and maintenance needs.'},
       ])},
       { id:'gold', title:'Gold layer objects', options: withDefaultChoices([
         {label:'1-5 objects', points:5, sub:'A very small presentation layer with a few curated outputs.'},
@@ -210,6 +260,14 @@
       ]
     };
 
+    const tierMeta = {
+      XS: { label: 'Extra small', min: 40, max: 69, next: 'S', nextStart: 70 },
+      S: { label: 'Small', min: 70, max: 94, next: 'M', nextStart: 95 },
+      M: { label: 'Medium', min: 95, max: 124, next: 'L', nextStart: 125 },
+      L: { label: 'Large', min: 125, max: 154, next: 'XL', nextStart: 155 },
+      XL: { label: 'Extra large', min: 155, max: 220, next: null, nextStart: null }
+    };
+
     function getTier(score){
       if(score <= 69) return 'XS';
       if(score <= 94) return 'S';
@@ -223,8 +281,8 @@
         XS:'A very small Fabric initiative, usually a pilot or tightly scoped proof of value.',
         S:'A focused Fabric implementation with limited complexity and a standard delivery model.',
         M:'A meaningful Fabric delivery with several moving parts, repeatable patterns, and moderate architecture depth.',
-        L:'A large Fabric initiative with broad scope, heavier governance, and substantial semantic and engineering effort.',
-        XL:'An enterprise-scale Fabric transformation with high complexity across platform, governance, and delivery model.'
+        L:'A large Fabric initiative with broad scope, heavier governance, and substantial semantic, reporting, and engineering effort.',
+        XL:'An enterprise-scale Fabric transformation with high complexity across platform, governance, reporting, and delivery model.'
       }[tier];
     }
 
@@ -251,6 +309,7 @@
 
     const resultPanel = document.getElementById('result');
     const appGrid = document.querySelector('.app-grid');
+    const bufferInput = document.getElementById('buffer');
 
     function showResults(){
       resultPanel.hidden = false;
@@ -264,6 +323,32 @@
       appGrid.classList.remove('has-result');
     }
 
+    function getBufferedScore(total){
+      const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
+      return Math.round(total * (1 + bufferPercent / 100));
+    }
+
+    function updateTierProgress(bufferedTotal, tier){
+      const meta = tierMeta[tier];
+      const nextMarker = document.getElementById('next-tier-marker');
+      const currentTierNote = document.getElementById('current-tier-note');
+      const nextTierNote = document.getElementById('next-tier-note');
+      document.getElementById('bar').style.width = Math.min(100, (bufferedTotal / 220) * 100) + '%';
+      currentTierNote.textContent = `Current tier: ${tier} · ${meta.label}`;
+
+      if(meta.nextStart){
+        nextMarker.style.display = 'block';
+        nextMarker.style.left = Math.min(100, (meta.nextStart / 220) * 100) + '%';
+        const distance = Math.max(0, meta.nextStart - bufferedTotal);
+        nextTierNote.textContent = distance === 0
+          ? `At the ${meta.next} threshold (${meta.nextStart})`
+          : `${distance} point${distance === 1 ? '' : 's'} to ${meta.next} (${meta.nextStart})`;
+      } else {
+        nextMarker.style.display = 'none';
+        nextTierNote.textContent = 'Top sizing tier reached';
+      }
+    }
+
     function calculate(showPanel = true){
       const chosen = [];
       let total = 0;
@@ -275,13 +360,22 @@
         chosen.push({ section: section.title, label: option ? option.label : input.dataset.label, points });
       });
 
-      const tier = getTier(total);
-      document.getElementById('score').textContent = total;
+      const bufferedTotal = getBufferedScore(total);
+      const tier = getTier(bufferedTotal);
+      const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
+
+      document.getElementById('score-base').textContent = total;
+      document.getElementById('score-buffered').textContent = bufferedTotal;
       document.getElementById('narrative').textContent = getNarrative(tier);
+      document.getElementById('buffer-summary').textContent = bufferPercent > 0
+        ? `Safety buffer of ${bufferPercent}% adds ${bufferedTotal - total} points to the initial estimate.`
+        : 'No safety buffer applied.';
+
       const badge = document.getElementById('badge');
       badge.className = 'badge ' + tier.toLowerCase();
-      badge.textContent = `${tier} · ${ {XS:'Extra small',S:'Small',M:'Medium',L:'Large',XL:'Extra large'}[tier] }`;
-      document.getElementById('bar').style.width = Math.min(100, (total / 200) * 100) + '%';
+      badge.textContent = `${tier} · ${tierMeta[tier].label}`;
+
+      updateTierProgress(bufferedTotal, tier);
 
       document.getElementById('rows').innerHTML = chosen.map(c => `<tr><td>${c.section}</td><td>${c.label}</td><td>${c.points}</td></tr>`).join('');
       document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li>${item}</li>`).join('');
@@ -293,9 +387,15 @@
       }
     }
 
-    document.getElementById('calculate').addEventListener('click', calculate);
+    document.getElementById('calculate').addEventListener('click', () => calculate(true));
+    bufferInput.addEventListener('input', () => {
+      if(!resultPanel.hidden){
+        calculate(false);
+      }
+    });
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
+        bufferInput.value = 0;
         calculate(false);
         hideResults();
       });
