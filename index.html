@@ -24,7 +24,7 @@
     .eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:var(--space-3);padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-primary);font-size:var(--text-sm);font-weight:700}
     .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:none;width:100%;margin-bottom:var(--space-4)} .hero p,.section-copy,.project-copy{color:var(--color-text-muted);max-width:none;width:100%}.hero-copy{display:grid;gap:var(--space-4)}
     .panel,.result{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);padding:var(--space-6)}
-    .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start;max-height:calc(100vh - 6rem);overflow:hidden} .result[hidden]{display:none}.result-scroll{display:grid;gap:var(--space-4);overflow-y:auto;padding-right:.35rem}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}
+    .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start;max-height:calc(100vh - 6rem);overflow:hidden} .result-scroll{display:grid;gap:var(--space-4);overflow-y:auto;padding-right:.35rem}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}
     .meta-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0 0 var(--space-6);padding:0;list-style:none} .meta-label{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm);color:var(--color-text-muted)}
     .project-intro{display:grid;gap:var(--space-3);margin-bottom:var(--space-6)}
     .group{display:grid;gap:var(--space-4);margin-bottom:var(--space-8)} .group h3{font-size:var(--text-lg)} .options{display:grid;gap:var(--space-3)} .option{position:relative}
@@ -35,11 +35,11 @@
     .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs{background:#e7e5df;color:#4f4a3f}.s{background:#ddf2f3;color:#12585d}.m{background:#e6ebff;color:#3c4db1}.l{background:#f8e9d6;color:#92591a}.xl{background:#f4dcdc;color:#9b2f2f}
     .score-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .score-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .score-card span{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:.35rem}.score{font-size:clamp(2.1rem,1.6rem + 2vw,3.3rem);line-height:1;font-weight:700}
     .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-3);align-items:center} .buffer-input{width:92px;padding:.6rem .7rem;border:1px solid var(--color-border);border-radius:.85rem;background:var(--color-surface);color:var(--color-text)} .buffer-note{font-size:var(--text-sm);color:var(--color-text-muted)}
-    .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative}.range{position:relative;height:14px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));width:0}.tier-marker{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--color-text-muted);opacity:.7}.tier-marker.current{background:var(--color-primary);opacity:1}.tier-label{display:flex;justify-content:space-between;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted)}
+    .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative;padding-top:1.1rem}.range-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3)} .range{position:relative;height:14px;border-radius:999px;background:var(--color-surface-offset);overflow:visible} #bar{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));width:0;border-radius:999px}.tier-marker{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--color-text-muted);opacity:.7;z-index:2}.tier-label-top{position:absolute;top:0;transform:translateX(-50%);font-size:var(--text-xs);color:var(--color-text-muted);white-space:nowrap}.tier-label{display:flex;justify-content:space-between;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted)}
     .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)} .mini{padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .mini span{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:.2rem}
     .score-table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .score-table th,.score-table td{padding:.65rem .4rem;border-bottom:1px solid var(--color-divider);vertical-align:top;text-align:left} .score-table th:last-child,.score-table td:last-child{text-align:right}
     ul.clean{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:0;margin:0} ul.clean li{list-style:none;padding:.55rem .85rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm)}
-    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:static;max-height:none}.result-scroll{overflow:visible;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row{grid-template-columns:1fr}}
+    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;max-height:none}.result-scroll{overflow:visible;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row,.range-title,.tier-label{grid-template-columns:1fr;display:grid}.tier-label-top{font-size:.65rem}}
   </style>
 </head>
 <body>
@@ -63,7 +63,7 @@
     </section>
 
     <section class="app container">
-      <div class="app-grid">
+      <div class="app-grid has-result">
         <form class="panel" id="form">
           <div class="project-intro">
             <h2 class="section-title">Project estimator</h2>
@@ -82,7 +82,7 @@
           </div>
         </form>
 
-        <aside class="result" id="result" hidden aria-hidden="true">
+        <aside class="result" id="result" aria-hidden="false">
           <div class="result-scroll">
             <div>
               <div id="badge" class="badge s">S · Small</div>
@@ -118,8 +118,12 @@
             </div>
 
             <div class="range-wrap">
-              <h3>Total score position</h3>
+              <div class="range-title">
+                <h3>Total score position</h3>
+                <span id="next-tier-note">Next tier starts at 95</span>
+              </div>
               <div class="range-scale">
+                <span id="next-tier-label" class="tier-label-top">M starts at 95</span>
                 <div class="range">
                   <div id="bar"></div>
                   <div id="next-tier-marker" class="tier-marker"></div>
@@ -127,7 +131,7 @@
               </div>
               <div class="tier-label">
                 <span id="current-tier-note">Current tier: S</span>
-                <span id="next-tier-note">Next tier starts at 95</span>
+                <span id="score-gap-note">10 points to the next tier</span>
               </div>
             </div>
 
@@ -233,39 +237,19 @@
     ];
 
     const interpretations = {
-      XS: [
-        'Pilot scope',
-        'Narrow use case',
-        'Light governance'
-      ],
-      S: [
-        'Department-sized delivery',
-        'Standard design patterns',
-        'Focused stakeholder set'
-      ],
-      M: [
-        'Multi-use-case domain',
-        'Reusable delivery patterns',
-        'Moderate governance'
-      ],
-      L: [
-        'Broad domain coverage',
-        'Heavy engineering effort',
-        'Structured delivery model'
-      ],
-      XL: [
-        'Enterprise-scale change',
-        'Advanced governance needs',
-        'Phased program delivery'
-      ]
+      XS: ['Pilot scope','Narrow use case','Light governance'],
+      S: ['Department-sized delivery','Standard design patterns','Focused stakeholder set'],
+      M: ['Multi-use-case domain','Reusable delivery patterns','Moderate governance'],
+      L: ['Broad domain coverage','Heavy engineering effort','Structured delivery model'],
+      XL: ['Enterprise-scale change','Advanced governance needs','Phased program delivery']
     };
 
     const tierMeta = {
-      XS: { label: 'Extra small', min: 40, max: 69, next: 'S', nextStart: 70 },
-      S: { label: 'Small', min: 70, max: 94, next: 'M', nextStart: 95 },
-      M: { label: 'Medium', min: 95, max: 124, next: 'L', nextStart: 125 },
-      L: { label: 'Large', min: 125, max: 154, next: 'XL', nextStart: 155 },
-      XL: { label: 'Extra large', min: 155, max: 220, next: null, nextStart: null }
+      XS: { label: 'Extra small', next: 'S', nextStart: 70 },
+      S: { label: 'Small', next: 'M', nextStart: 95 },
+      M: { label: 'Medium', next: 'L', nextStart: 125 },
+      L: { label: 'Large', next: 'XL', nextStart: 155 },
+      XL: { label: 'Extra large', next: null, nextStart: null }
     };
 
     function getTier(score){
@@ -311,18 +295,6 @@
     const appGrid = document.querySelector('.app-grid');
     const bufferInput = document.getElementById('buffer');
 
-    function showResults(){
-      resultPanel.hidden = false;
-      resultPanel.setAttribute('aria-hidden', 'false');
-      appGrid.classList.add('has-result');
-    }
-
-    function hideResults(){
-      resultPanel.hidden = true;
-      resultPanel.setAttribute('aria-hidden', 'true');
-      appGrid.classList.remove('has-result');
-    }
-
     function getBufferedScore(total){
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
       return Math.round(total * (1 + bufferPercent / 100));
@@ -331,25 +303,34 @@
     function updateTierProgress(bufferedTotal, tier){
       const meta = tierMeta[tier];
       const nextMarker = document.getElementById('next-tier-marker');
+      const nextTierLabel = document.getElementById('next-tier-label');
       const currentTierNote = document.getElementById('current-tier-note');
       const nextTierNote = document.getElementById('next-tier-note');
+      const scoreGapNote = document.getElementById('score-gap-note');
       document.getElementById('bar').style.width = Math.min(100, (bufferedTotal / 220) * 100) + '%';
       currentTierNote.textContent = `Current tier: ${tier} · ${meta.label}`;
 
       if(meta.nextStart){
+        const markerPosition = Math.min(100, (meta.nextStart / 220) * 100);
         nextMarker.style.display = 'block';
-        nextMarker.style.left = Math.min(100, (meta.nextStart / 220) * 100) + '%';
+        nextTierLabel.style.display = 'block';
+        nextMarker.style.left = markerPosition + '%';
+        nextTierLabel.style.left = markerPosition + '%';
+        nextTierLabel.textContent = `${meta.next} starts at ${meta.nextStart}`;
         const distance = Math.max(0, meta.nextStart - bufferedTotal);
-        nextTierNote.textContent = distance === 0
-          ? `At the ${meta.next} threshold (${meta.nextStart})`
-          : `${distance} point${distance === 1 ? '' : 's'} to ${meta.next} (${meta.nextStart})`;
+        nextTierNote.textContent = `Next tier starts at ${meta.nextStart}`;
+        scoreGapNote.textContent = distance === 0
+          ? `At the ${meta.next} threshold`
+          : `${distance} point${distance === 1 ? '' : 's'} to the next tier`;
       } else {
         nextMarker.style.display = 'none';
+        nextTierLabel.style.display = 'none';
         nextTierNote.textContent = 'Top sizing tier reached';
+        scoreGapNote.textContent = 'No higher tier remaining';
       }
     }
 
-    function calculate(showPanel = true){
+    function calculate(){
       const chosen = [];
       let total = 0;
       sections.forEach(section => {
@@ -376,28 +357,19 @@
       badge.textContent = `${tier} · ${tierMeta[tier].label}`;
 
       updateTierProgress(bufferedTotal, tier);
-
       document.getElementById('rows').innerHTML = chosen.map(c => `<tr><td>${c.section}</td><td>${c.label}</td><td>${c.points}</td></tr>`).join('');
       document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li>${item}</li>`).join('');
 
       const top = [...chosen].sort((a,b) => b.points - a.points).slice(0,4);
       document.getElementById('highlights').innerHTML = top.map(item => `<div class="mini"><span>${item.section}</span><strong>${item.label}</strong></div>`).join('');
-      if(showPanel){
-        showResults();
-      }
     }
 
-    document.getElementById('calculate').addEventListener('click', () => calculate(true));
-    bufferInput.addEventListener('input', () => {
-      if(!resultPanel.hidden){
-        calculate(false);
-      }
-    });
+    document.getElementById('calculate').addEventListener('click', calculate);
+    bufferInput.addEventListener('input', calculate);
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
         bufferInput.value = 0;
-        calculate(false);
-        hideResults();
+        calculate();
       });
     });
 
@@ -415,7 +387,7 @@
       draw();
     })();
 
-    hideResults();
+    calculate();
   </script>
 </body>
 </html>
