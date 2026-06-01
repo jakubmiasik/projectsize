@@ -21,8 +21,8 @@
     .header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--color-bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-divider)}
     .header-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}.brand{display:flex;align-items:center;gap:.8rem;font-weight:700}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary),#6cbec2);display:grid;place-items:center;color:var(--color-primary-ink);font-family:var(--font-display);font-weight:800}.theme-toggle{border:1px solid var(--color-border);background:var(--color-surface);width:42px;height:42px;border-radius:999px;display:grid;place-items:center;cursor:pointer;color:var(--color-text)}
     .hero{padding:var(--space-12) 0 var(--space-8)} .hero-grid{display:grid;grid-template-columns:1fr;gap:var(--space-8)} .app-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(340px,.95fr);gap:var(--space-6);align-items:start} .app-grid.has-result{grid-template-columns:minmax(0,1.4fr) minmax(360px,.9fr)}
-    .eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:var(--space-3);padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-primary);font-size:var(--text-sm);font-weight:700;letter-spacing:.02em}
-    .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:none;width:100%;margin-bottom:var(--space-4)} .hero p,.section-copy,.project-copy{color:var(--color-text-muted);max-width:none;width:100%}.hero-copy{display:grid;gap:var(--space-4)}
+    .eyebrow{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);color:var(--color-primary);font-size:var(--text-sm);font-weight:700;letter-spacing:.02em}
+    .hero h1{font-family:var(--font-display);font-size:var(--text-2xl);max-width:none;width:100%;margin-bottom:var(--space-3)} .hero p,.section-copy,.project-copy{color:var(--color-text-muted);max-width:none;width:100%}.hero-copy{display:grid;gap:var(--space-4)}
     .panel,.result{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);padding:var(--space-6)}
     .app{padding-bottom:var(--space-12)} .result{position:sticky;top:5rem;display:grid;gap:var(--space-4);align-content:start;height:calc(100vh - 6rem);overflow:hidden} .result-scroll{display:grid;gap:var(--space-4);height:100%;overflow-y:auto;padding-right:.35rem;min-height:0}.section-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:.35rem}
     .meta-list{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0 0 var(--space-6);padding:0;list-style:none} .meta-label{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm);color:var(--color-text-muted)}
@@ -31,7 +31,7 @@
     .option input{position:absolute;opacity:0;inset:0} .option label{display:block;padding:1rem 1rem 1rem 3.35rem;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);cursor:pointer;transition:.2s ease} .option label:hover{border-color:color-mix(in srgb,var(--color-primary) 35%,var(--color-border));transform:translateY(-1px)}
     .option label::before{content:"";position:absolute;left:1rem;top:1rem;width:1.1rem;height:1.1rem;border-radius:999px;border:2px solid #8e8b84} .option input:checked + label{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-primary) 18%, transparent)} .option input:checked + label::before{background:var(--color-primary);border-color:var(--color-primary);box-shadow:inset 0 0 0 3px var(--color-surface)}
     .option-title{display:block;font-weight:700;margin-bottom:.2rem}.sub{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-top:.2rem}
-    .actions{display:flex;gap:var(--space-3);flex-wrap:wrap} .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;color:var(--color-text)} .btn-primary{background:var(--color-primary);color:var(--color-primary-ink);border-color:transparent;font-weight:700}
+    .actions{position:sticky;bottom:0;display:flex;gap:var(--space-3);flex-wrap:wrap;padding-top:var(--space-4);padding-bottom:var(--space-2);background:linear-gradient(180deg,rgba(249,248,245,0),var(--color-surface) 20%);z-index:5} [data-theme="dark"] .actions{background:linear-gradient(180deg,rgba(28,27,25,0),var(--color-surface) 20%)} .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;color:var(--color-text)} .btn-primary{background:var(--color-primary);color:var(--color-primary-ink);border-color:transparent;font-weight:700}
     .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs{background:#e7e5df;color:#4f4a3f}.s{background:#d8efe4;color:#13452b}.m{background:#f7e8bd;color:#775400}.l{background:#f6d4c8;color:#7c341d}.xl{background:#e0d6f7;color:#4a2b8f}
     .score-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .score-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .score-card span{display:block;font-size:var(--text-sm);color:var(--color-text-muted)} .score{font-size:var(--text-2xl);font-weight:800;font-family:var(--font-display)}
     .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:center} .buffer-row label{display:flex;align-items:center;gap:.5rem;justify-self:end} .buffer-input{width:88px;padding:.65rem .8rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);text-align:right} .buffer-note{font-weight:700;color:var(--color-text-muted)}
@@ -40,7 +40,7 @@
     .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left}.score-table td{padding:.8rem .9rem;background:var(--color-surface-offset);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider)} .score-table td:first-child{border-left:1px solid var(--color-divider);border-radius:1rem 0 0 1rem}.score-table td:last-child{border-right:1px solid var(--color-divider);border-radius:0 1rem 1rem 0}.section-cell{display:flex;align-items:center;gap:.55rem}.section-icon{font-size:1.1rem}.section-name{font-weight:700}.section-choice{color:var(--color-text-muted)}
     ul.clean{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:0;margin:0} ul.clean li{list-style:none;padding:.55rem .85rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm)}
     .summary-stack{display:grid;gap:var(--space-4)} .summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset);border:1px solid var(--color-divider)} .summary-card h4{margin-bottom:var(--space-3);font-size:var(--text-base)} .summary-card table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .summary-card th,.summary-card td{padding:.45rem .25rem;text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top} .summary-card th:last-child,.summary-card td:last-child{text-align:right} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none}
-    .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:var(--space-3);align-items:center} .timeline-phase{font-weight:700;font-size:var(--text-sm)} .timeline-bar-track{position:relative;height:18px;border-radius:999px;background:var(--color-surface-2);overflow:hidden;border:1px solid var(--color-divider)} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),#79d3d0)} .timeline-value{font-size:var(--text-sm);color:var(--color-text-muted);white-space:nowrap}
+    .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:var(--space-3);align-items:center} .timeline-phase{font-weight:700;font-size:var(--text-sm)} .timeline-bar-track{position:relative;height:18px;border-radius:999px;background:var(--color-surface-2);overflow:hidden;border:1px solid var(--color-divider)} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),#79d3d0)}
     @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row,.range-title,.tier-label,.timeline-row{grid-template-columns:1fr;display:grid}.tier-label-top{font-size:.65rem}.score-table td:first-child,.score-table td:last-child{border-radius:1rem}.score-table td{display:block;border-left:1px solid var(--color-divider);border-right:1px solid var(--color-divider)} }
   </style>
 </head>
@@ -56,8 +56,8 @@
     <section class="hero container">
       <div class="hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">Scorecard</span>
           <h1>T-shirt sizing for Microsoft Fabric projects</h1>
+          <span class="eyebrow">Scorecard</span>
           <p>This scorecard helps estimate the likely size of a Microsoft Fabric implementation by combining scope, engineering complexity, governance requirements, semantic modeling, reporting needs, and delivery expectations into a single sizing view.</p>
           <p>It is intended as an early planning tool for shaping conversations about delivery effort, sequencing, stakeholder alignment, and the level of architecture and platform design that may be required before detailed estimation begins.</p>
         </div>
@@ -161,6 +161,7 @@
 
               <div class="summary-card">
                 <h4>Estimated timeline by phase</h4>
+                <div id="timeline-total" class="timeline-total"></div>
                 <div id="timeline-summary" class="timeline-chart"></div>
               </div>
             </div>
@@ -335,14 +336,11 @@
       return `${min}${suffix} - ${max}${suffix}`;
     }
 
-    function formatWeeks(value) {
-      return Number(value.toFixed(1)).toString();
-    }
-
     function renderSizeSummary(tier) {
       const meta = sizeSummaryMeta[tier];
       const hoursSummary = document.getElementById('hours-summary');
       const timelineSummary = document.getElementById('timeline-summary');
+      const timelineTotal = document.getElementById('timeline-total');
       const timelineMax = meta.timelineWeeks.max ?? meta.timelineWeeks.min;
 
       hoursSummary.innerHTML = `
@@ -355,18 +353,19 @@
           <td>${formatRange(meta.hours.min, meta.hours.max, ' h')}</td>
         </tr>
         <tr>
-          <th>Timeline range</th>
+          <th>Total timeline</th>
           <td>${formatRange(meta.timelineWeeks.min, meta.timelineWeeks.max, ' weeks')}</td>
         </tr>`;
 
+      timelineTotal.textContent = `Total timeline: ${formatRange(meta.timelineWeeks.min, meta.timelineWeeks.max, ' weeks')}`;
+
+      let currentStart = 0;
       timelineSummary.innerHTML = timelinePhases.map(phase => {
-        const minWeeks = meta.timelineWeeks.min * phase.percent;
-        const maxWeeks = meta.timelineWeeks.max === null
-          ? null
-          : meta.timelineWeeks.max * phase.percent;
-        const safeMax = maxWeeks ?? minWeeks;
-        const leftPercent = (minWeeks / timelineMax) * 100;
-        const widthPercent = Math.max(((safeMax - minWeeks) / timelineMax) * 100, 4);
+        const start = currentStart;
+        const end = currentStart + phase.percent * timelineMax;
+        currentStart = end;
+        const leftPercent = (start / timelineMax) * 100;
+        const widthPercent = ((end - start) / timelineMax) * 100;
 
         return `
           <div class="timeline-row">
@@ -374,7 +373,6 @@
             <div class="timeline-bar-track">
               <div class="timeline-bar-range" style="left:${leftPercent}%; width:${widthPercent}%"></div>
             </div>
-            <div class="timeline-value">${formatRange(formatWeeks(minWeeks), maxWeeks === null ? null : formatWeeks(maxWeeks), ' w')}</div>
           </div>`;
       }).join('');
     }
