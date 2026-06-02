@@ -37,9 +37,9 @@
     .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:center} .buffer-row label{display:flex;align-items:center;gap:.5rem;justify-self:end} .buffer-input{width:88px;padding:.65rem .8rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);text-align:right} .buffer-note{font-weight:700;color:var(--color-text-muted)}
     .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative;padding-top:1.1rem}.range-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3)} .tier-label-top{position:absolute;top:0;transform:translateX(-50%);font-size:var(--text-xs);color:var(--color-text-muted)} .range{position:relative;height:12px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{height:100%;background:linear-gradient(90deg,var(--color-primary),#79d3d0);border-radius:999px}.tier-marker{position:absolute;top:-4px;width:2px;height:20px;background:var(--color-text)} .tier-label{display:flex;justify-content:space-between;font-size:var(--text-sm);color:var(--color-text-muted)}
     .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)} .mini{padding:var(--space-4);border-radius:var(--radius-lg);background:linear-gradient(135deg,color-mix(in srgb,var(--color-primary) 14%,transparent),var(--color-surface-offset));border:1px solid color-mix(in srgb,var(--color-primary) 18%,var(--color-border))} .mini strong{display:block;margin-top:.35rem}.mini-head{display:flex;align-items:center;gap:.5rem;color:var(--color-text-muted);font-size:var(--text-sm)}
-    .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left}.score-table td{padding:.8rem .9rem;background:var(--color-surface-offset);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider)} .score-table td:first-child{border-left:1px solid var(--color-divider);border-radius:1rem 0 0 1rem}.score-table td:last-child{border-right:1px solid var(--color-divider);border-radius:0 1rem 1rem 0}.section-cell{display:flex;align-items:center;gap:.55rem}.section-icon{font-size:1.1rem}.section-name{font-weight:700}.section-choice{color:var(--color-text-muted)}
+    .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left}.score-table td{padding:.8rem .9rem;background:var(--color-surface-offset);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider)} .score-table td:first-child{border-left:1px solid var(--color-divider);border-radius:1rem 0 0 1rem}.score-table td:last-child{border-right:1px solid var(--color-divider);border-radius:0 1rem 1rem 0}.section-cell{display:flex;align-items:center;gap:.55rem}.section-icon{font-size:1.1rem}.section-name{font-weight:700}.section-choice{color:var(--color-text-muted)} .section-points,.section-impact{text-align:right;font-variant-numeric:tabular-nums}
     ul.clean{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:0;margin:0} ul.clean li{list-style:none;padding:.55rem .85rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm)}
-    .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);border:1px solid transparent;overflow:hidden} .summary-list details[open]{border-color:var(--color-divider)} .summary-list summary{display:flex;align-items:center;justify-content:space-between;padding:.55rem .85rem;cursor:pointer;font-size:var(--text-sm);font-weight:600;list-style:none;gap:var(--space-2);user-select:none} .summary-list summary::-webkit-details-marker{display:none} .summary-list summary::after{content:"›";font-size:1.1rem;color:var(--color-text-muted);transition:transform .2s ease;flex-shrink:0} .summary-list details[open] summary::after{transform:rotate(90deg)} .summary-detail{padding:.45rem .85rem .8rem;font-size:var(--text-sm);color:var(--color-text-muted);border-top:1px solid var(--color-divider)}
+    .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);border:1px solid transparent;overflow:hidden} .summary-list details[open]{border-color:var(--color-divider)} .summary-list summary{display:flex;align-items:center;justify-content:space-between;padding:.55rem .85rem;cursor:pointer;font-size:var(--text-sm);font-weight:600;list-style:none;gap:var(--space-2);user-select:none} .summary-list summary::-webkit-details-marker{display:none} .summary-list summary::after{content:"›";font-size:1.1rem;color:var(--color-text-muted);transition:transform .2s ease;flex-shrink:0} .summary-list details[open] summary::after{transform:rotate(90deg)} .summary-detail{padding:.45rem .85rem .8rem;font-size:var(--text-sm);color:var(--color-text-muted);border-top:1px solid var(--color-divider)} .summary-metric{display:flex;align-items:center;gap:.4rem;color:var(--color-text-muted);font-variant-numeric:tabular-nums} .impact-flag{display:inline-flex;align-items:center;padding:.2rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--color-primary) 18%,var(--color-surface));color:var(--color-primary);font-size:var(--text-xs);font-weight:700} .summary-list details.impact-top{border-color:color-mix(in srgb,var(--color-primary) 42%,var(--color-divider))}
     .summary-stack{display:grid;gap:var(--space-4)} .summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset);border:1px solid var(--color-divider)} .summary-card h4{margin-bottom:var(--space-3);font-size:var(--text-base)} .summary-card table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .summary-card th,.summary-card td{padding:.45rem .25rem;text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top} .summary-card th:last-child,.summary-card td:last-child{text-align:right} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none}
     .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:var(--space-3);align-items:center} .timeline-phase{font-weight:700;font-size:var(--text-sm)} .timeline-bar-track{position:relative;height:18px;border-radius:999px;background:var(--color-surface-2);overflow:hidden;border:1px solid var(--color-divider)} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),#79d3d0)}
     @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row,.range-title,.tier-label,.timeline-row{grid-template-columns:1fr;display:grid}.tier-label-top{font-size:.65rem}.score-table td:first-child,.score-table td:last-child{border-radius:1rem}.score-table td{display:block;border-left:1px solid var(--color-divider);border-right:1px solid var(--color-divider)} }
@@ -142,12 +142,18 @@
             <div>
               <h3>Section selections</h3>
               <table class="score-table">
-                <thead><tr><th>Section</th><th>Selected</th></tr></thead>
+                <thead><tr><th>Section</th><th>Selected</th><th>Points</th><th>Impact</th></tr></thead>
                 <tbody id="rows"></tbody>
               </table>
             </div>
 
             <div class="summary-stack">
+              <div>
+                <h3>Section impact summary</h3>
+                <p class="muted">Ranked by assigned points. Relative impact is based on the initial score.</p>
+                <ul class="summary-list" id="impact-summary"></ul>
+              </div>
+
               <div>
                 <h3>Suggested interpretation</h3>
                 <ul class="summary-list" id="summary"></ul>
@@ -493,8 +499,35 @@
             </div>
           </td>
           <td class="section-choice">${c.label}</td>
+          <td class="section-points">${c.points}</td>
+          <td class="section-impact">${total > 0 ? ((c.points / total) * 100).toFixed(1) : '0.0'}%</td>
         </tr>`).join('');
       document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li><details><summary>${item.label}</summary><div class="summary-detail">${item.detail}</div></details></li>`).join('');
+
+      const ranked = [...chosen]
+        .sort((a, b) => b.points - a.points || a.section.localeCompare(b.section))
+        .map(item => ({
+          ...item,
+          impact: total > 0 ? (item.points / total) * 100 : 0
+        }));
+      const maxPoints = ranked.length ? ranked[0].points : 0;
+      document.getElementById('impact-summary').innerHTML = ranked.map(item => {
+        const highestImpact = maxPoints > 0 && item.points === maxPoints;
+        return `<li>
+          <details class="${highestImpact ? 'impact-top' : ''}" ${highestImpact ? 'open' : ''}>
+            <summary>
+              <span>${item.section}</span>
+              <span class="summary-metric">${item.points} pts · ${item.impact.toFixed(1)}%</span>
+            </summary>
+            <div class="summary-detail">
+              <div><strong>Selected option:</strong> ${item.label}</div>
+              <div><strong>Assigned points:</strong> ${item.points}</div>
+              <div><strong>Relative impact:</strong> ${item.impact.toFixed(1)}% of initial score</div>
+              ${highestImpact ? '<div><span class="impact-flag">Highest impact</span></div>' : ''}
+            </div>
+          </details>
+        </li>`;
+      }).join('');
 
       const top = [...chosen].sort((a,b) => b.points - a.points).slice(0,4);
       document.getElementById('highlights').innerHTML = top.map(item => `
@@ -508,6 +541,9 @@
     }
 
     document.getElementById('calculate').addEventListener('click', calculate);
+    document.getElementById('form').addEventListener('change', (event) => {
+      if(event.target.matches('input[type="radio"]')) calculate();
+    });
     bufferInput.addEventListener('input', calculate);
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
