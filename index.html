@@ -31,16 +31,17 @@
     .option input{position:absolute;opacity:0;inset:0} .option label{display:block;padding:1rem 1rem 1rem 3.35rem;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:var(--radius-lg);cursor:pointer;transition:.2s ease} .option label:hover{border-color:color-mix(in srgb,var(--color-primary) 35%,var(--color-border));transform:translateY(-1px)}
     .option label::before{content:"";position:absolute;left:1rem;top:1rem;width:1.1rem;height:1.1rem;border-radius:999px;border:2px solid #8e8b84} .option input:checked + label{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-primary) 18%, transparent)} .option input:checked + label::before{background:var(--color-primary);border-color:var(--color-primary);box-shadow:inset 0 0 0 3px var(--color-surface)}
     .option-title{display:block;font-weight:700;margin-bottom:.2rem}.sub{display:block;color:var(--color-text-muted);font-size:var(--text-sm);margin-top:.2rem}
+    .section-adjustment{display:grid;gap:var(--space-2);padding:var(--space-4);border:1px solid var(--color-divider);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .section-adjustment label{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);font-weight:700} .section-adjustment-help{font-size:var(--text-sm);color:var(--color-text-muted)} .multiplier-field{display:flex;align-items:center;gap:.5rem;justify-self:start} .multiplier-input{width:96px;padding:.65rem .8rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);text-align:right}
     .actions{position:sticky;bottom:0;display:flex;gap:var(--space-3);flex-wrap:wrap;padding-top:var(--space-4);padding-bottom:var(--space-2);background:linear-gradient(180deg,rgba(249,248,245,0),var(--color-surface) 20%);z-index:5} [data-theme="dark"] .actions{background:linear-gradient(180deg,rgba(28,27,25,0),var(--color-surface) 20%)} .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;color:var(--color-text)} .btn-primary{background:var(--color-primary);color:var(--color-primary-ink);border-color:transparent;font-weight:700}
     .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs{background:#e7e5df;color:#4f4a3f}.s{background:#d8efe4;color:#13452b}.m{background:#f7e8bd;color:#775400}.l{background:#f6d4c8;color:#7c341d}.xl{background:#e0d6f7;color:#4a2b8f}
     .score-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .score-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .score-card span{display:block;font-size:var(--text-sm);color:var(--color-text-muted)} .score{font-size:var(--text-2xl);font-weight:800;font-family:var(--font-display)}
     .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:center} .buffer-row label{display:flex;align-items:center;gap:.5rem;justify-self:end} .buffer-input{width:88px;padding:.65rem .8rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);color:var(--color-text);text-align:right} .buffer-note{font-weight:700;color:var(--color-text-muted)}
     .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative;padding-top:1.1rem}.range-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3)} .tier-label-top{position:absolute;top:0;transform:translateX(-50%);font-size:var(--text-xs);color:var(--color-text-muted)} .range{position:relative;height:12px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{height:100%;background:linear-gradient(90deg,var(--color-primary),#79d3d0);border-radius:999px}.tier-marker{position:absolute;top:-4px;width:2px;height:20px;background:var(--color-text)} .tier-label{display:flex;justify-content:space-between;font-size:var(--text-sm);color:var(--color-text-muted)}
     .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)} .mini{padding:var(--space-4);border-radius:var(--radius-lg);background:linear-gradient(135deg,color-mix(in srgb,var(--color-primary) 14%,transparent),var(--color-surface-offset));border:1px solid color-mix(in srgb,var(--color-primary) 18%,var(--color-border))} .mini strong{display:block;margin-top:.35rem}.mini-head{display:flex;align-items:center;gap:.5rem;color:var(--color-text-muted);font-size:var(--text-sm)}
-    .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left}.score-table td{padding:.8rem .9rem;background:var(--color-surface-offset);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider)} .score-table td:first-child{border-left:1px solid var(--color-divider);border-radius:1rem 0 0 1rem}.score-table td:last-child{border-right:1px solid var(--color-divider);border-radius:0 1rem 1rem 0}.section-cell{display:flex;align-items:center;gap:.55rem}.section-icon{font-size:1.1rem}.section-name{font-weight:700}.section-choice{color:var(--color-text-muted)} .section-points,.section-impact{text-align:right;font-variant-numeric:tabular-nums}
+    .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left}.score-table td{padding:.8rem .9rem;background:var(--color-surface-offset);border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider)} .score-table td:first-child{border-left:1px solid var(--color-divider);border-radius:1rem 0 0 1rem}.score-table td:last-child{border-right:1px solid var(--color-divider);border-radius:0 1rem 1rem 0}.section-cell{display:flex;align-items:center;gap:.55rem}.section-icon{font-size:1.1rem}.section-name{font-weight:700}.section-choice{color:var(--color-text-muted)} .section-points,.section-impact{text-align:right;font-variant-numeric:tabular-nums} .point-note{display:block;margin-top:.2rem;font-size:var(--text-xs);color:var(--color-text-muted)}
     ul.clean{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:0;margin:0} ul.clean li{list-style:none;padding:.55rem .85rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-sm)}
     .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);border:1px solid transparent;overflow:hidden} .summary-list details[open]{border-color:var(--color-divider)} .summary-list summary{display:flex;align-items:center;justify-content:space-between;padding:.55rem .85rem;cursor:pointer;font-size:var(--text-sm);font-weight:600;list-style:none;gap:var(--space-2);user-select:none} .summary-list summary::-webkit-details-marker{display:none} .summary-list summary::after{content:"›";font-size:1.1rem;color:var(--color-text-muted);transition:transform .2s ease;flex-shrink:0} .summary-list details[open] summary::after{transform:rotate(90deg)} .summary-detail{padding:.45rem .85rem .8rem;font-size:var(--text-sm);color:var(--color-text-muted);border-top:1px solid var(--color-divider)} .summary-metric{display:flex;align-items:center;gap:.4rem;color:var(--color-text-muted);font-variant-numeric:tabular-nums} .impact-flag{display:inline-flex;align-items:center;padding:.2rem .55rem;border-radius:999px;background:color-mix(in srgb,var(--color-primary) 18%,var(--color-surface));color:var(--color-primary);font-size:var(--text-xs);font-weight:700} .summary-list details.impact-top{border-color:color-mix(in srgb,var(--color-primary) 42%,var(--color-divider))}
-    .summary-stack{display:grid;gap:var(--space-4)} .summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset);border:1px solid var(--color-divider)} .summary-card h4{margin-bottom:var(--space-3);font-size:var(--text-base)} .summary-card table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .summary-card th,.summary-card td{padding:.45rem .25rem;text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top} .summary-card th:last-child,.summary-card td:last-child{text-align:right} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none}
+    .summary-stack{display:grid;gap:var(--space-4)} .summary-stack>details{border:1px solid var(--color-divider);border-radius:var(--radius-lg);background:var(--color-surface-offset);overflow:hidden} .summary-stack>details>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);padding:var(--space-4);cursor:pointer;list-style:none;user-select:none} .summary-stack>details>summary::-webkit-details-marker{display:none} .summary-stack>details>summary::after{content:"›";font-size:1.15rem;color:var(--color-text-muted);transition:transform .2s ease;flex-shrink:0} .summary-stack>details[open]>summary::after{transform:rotate(90deg)} .summary-stack>details>.summary-detail{display:grid;gap:var(--space-3)} .summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset);border:1px solid var(--color-divider)} .summary-card h4{margin-bottom:var(--space-3);font-size:var(--text-base)} .summary-card table{width:100%;border-collapse:collapse;font-size:var(--text-sm)} .summary-card th,.summary-card td{padding:.45rem .25rem;text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top} .summary-card th:last-child,.summary-card td:last-child{text-align:right} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none}
     .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:var(--space-3);align-items:center} .timeline-phase{font-weight:700;font-size:var(--text-sm)} .timeline-bar-track{position:relative;height:18px;border-radius:999px;background:var(--color-surface-2);overflow:hidden;border:1px solid var(--color-divider)} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),#79d3d0)}
     @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:640px){.container{width:min(calc(100% - 1rem),var(--content))}.mini-grid,.score-pair{grid-template-columns:1fr}.buffer-row,.range-title,.tier-label,.timeline-row{grid-template-columns:1fr;display:grid}.tier-label-top{font-size:.65rem}.score-table td:first-child,.score-table td:last-child{border-radius:1rem}.score-table td{display:block;border-left:1px solid var(--color-divider);border-right:1px solid var(--color-divider)} }
   </style>
@@ -148,11 +149,13 @@
             </div>
 
             <div class="summary-stack">
-              <div>
-                <h3>Section impact summary</h3>
-                <p class="muted">Ranked by assigned points. Relative impact is based on the initial score.</p>
-                <ul class="summary-list" id="impact-summary"></ul>
-              </div>
+              <details>
+                <summary><h3>Section impact summary</h3></summary>
+                <div class="summary-detail">
+                  <p class="muted">Ranked by assigned points. Relative impact is based on the initial score.</p>
+                  <ul class="summary-list" id="impact-summary"></ul>
+                </div>
+              </details>
 
               <div>
                 <h3>Suggested interpretation</h3>
@@ -363,6 +366,17 @@
       return `${min}${suffix} - ${max}${suffix}`;
     }
 
+    function roundScore(value) {
+      return Math.round(value * 100) / 100;
+    }
+
+    function formatPoints(value) {
+      return roundScore(value).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
     function renderSizeSummary(tier) {
       const meta = sizeSummaryMeta[tier];
       const hoursSummary = document.getElementById('hours-summary');
@@ -421,6 +435,16 @@
               </label>
             </div>
           `).join('')}
+        </div>
+        <div class="section-adjustment">
+          <label for="${section.id}-multiplier">
+            <span>Section multiplier</span>
+            <span class="multiplier-field">
+              <input id="${section.id}-multiplier" class="multiplier-input" type="number" min="0" max="500" step="5" value="0" data-section-multiplier="${section.id}" />
+              <span class="buffer-note">%</span>
+            </span>
+          </label>
+          <p class="section-adjustment-help">Enter a percentage to increase this section’s selected points. Example: 15 adds 15% to this section total.</p>
         </div>`;
       questionRoot.appendChild(block);
     });
@@ -429,7 +453,7 @@
 
     function getBufferedScore(total){
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
-      return Math.round(total * (1 + bufferPercent / 100));
+      return roundScore(total * (1 + bufferPercent / 100));
     }
 
     function updateTierProgress(bufferedTotal, tier){
@@ -453,7 +477,7 @@
         nextTierNote.textContent = `Next tier starts at ${meta.nextStart}`;
         scoreGapNote.textContent = distance === 0
           ? `At the ${meta.next} threshold`
-          : `${distance} point${distance === 1 ? '' : 's'} to the next tier`;
+          : `${formatPoints(distance)} point${distance === 1 ? '' : 's'} to the next tier`;
       } else {
         nextMarker.style.display = 'none';
         nextTierLabel.style.display = 'none';
@@ -467,21 +491,32 @@
       let total = 0;
       sections.forEach(section => {
         const input = document.querySelector(`input[name="${section.id}"]:checked`);
-        const points = Number(input.value);
-        const option = section.options.find(o => o.label === input.dataset.label && o.points === points);
+        const basePoints = Number(input.value);
+        const option = section.options.find(o => o.label === input.dataset.label && o.points === basePoints);
+        const multiplierInput = document.querySelector(`[data-section-multiplier="${section.id}"]`);
+        const multiplierPercent = Math.max(0, Number(multiplierInput?.value) || 0);
+        const points = roundScore(basePoints * (1 + multiplierPercent / 100));
         total += points;
-        chosen.push({ sectionId: section.id, section: section.title, label: option ? option.label : input.dataset.label, points });
+        chosen.push({
+          sectionId: section.id,
+          section: section.title,
+          label: option ? option.label : input.dataset.label,
+          basePoints,
+          multiplierPercent,
+          points
+        });
       });
 
+      total = roundScore(total);
       const bufferedTotal = getBufferedScore(total);
       const tier = getTier(bufferedTotal);
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
 
-      document.getElementById('score-base').textContent = total;
-      document.getElementById('score-buffered').textContent = bufferedTotal;
+      document.getElementById('score-base').textContent = formatPoints(total);
+      document.getElementById('score-buffered').textContent = formatPoints(bufferedTotal);
       document.getElementById('narrative').textContent = getNarrative(tier);
       document.getElementById('buffer-summary').textContent = bufferPercent > 0
-        ? `Safety buffer of ${bufferPercent}% adds ${bufferedTotal - total} points to the initial estimate.`
+        ? `Safety buffer of ${bufferPercent}% adds ${formatPoints(bufferedTotal - total)} points to the initial estimate.`
         : 'No safety buffer applied.';
 
       const badge = document.getElementById('badge');
@@ -499,7 +534,10 @@
             </div>
           </td>
           <td class="section-choice">${c.label}</td>
-          <td class="section-points">${c.points}</td>
+          <td class="section-points">
+            ${formatPoints(c.points)}
+            ${c.multiplierPercent > 0 ? `<span class="point-note">${formatPoints(c.basePoints)} base + ${formatPoints(c.multiplierPercent)}%</span>` : ''}
+          </td>
           <td class="section-impact">${total > 0 ? ((c.points / total) * 100).toFixed(1) : '0.0'}%</td>
         </tr>`).join('');
       document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li><details><summary>${item.label}</summary><div class="summary-detail">${item.detail}</div></details></li>`).join('');
@@ -517,11 +555,13 @@
           <details class="${highestImpact ? 'impact-top' : ''}" ${highestImpact ? 'open' : ''}>
             <summary>
               <span>${item.section}</span>
-              <span class="summary-metric">${item.points} pts · ${item.impact.toFixed(1)}%</span>
+              <span class="summary-metric">${formatPoints(item.points)} pts · ${item.impact.toFixed(1)}%</span>
             </summary>
             <div class="summary-detail">
               <div><strong>Selected option:</strong> ${item.label}</div>
-              <div><strong>Assigned points:</strong> ${item.points}</div>
+              <div><strong>Base points:</strong> ${formatPoints(item.basePoints)}</div>
+              <div><strong>Section multiplier:</strong> ${formatPoints(item.multiplierPercent)}%</div>
+              <div><strong>Assigned points:</strong> ${formatPoints(item.points)}</div>
               <div><strong>Relative impact:</strong> ${item.impact.toFixed(1)}% of initial score</div>
               ${highestImpact ? '<div><span class="impact-flag">Highest impact</span></div>' : ''}
             </div>
@@ -542,9 +582,12 @@
 
     document.getElementById('calculate').addEventListener('click', calculate);
     document.getElementById('form').addEventListener('change', (event) => {
-      if(event.target.matches('input[type="radio"]')) calculate();
+      if(event.target.matches('input[type="radio"], input[data-section-multiplier]')) calculate();
     });
     bufferInput.addEventListener('input', calculate);
+    document.querySelectorAll('input[data-section-multiplier]').forEach(input => {
+      input.addEventListener('input', calculate);
+    });
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
         bufferInput.value = 0;
