@@ -143,7 +143,7 @@
             <div>
               <h3>Section selections</h3>
               <table class="score-table">
-                <thead><tr><th>Section</th><th>Selected</th><th>Points</th><th>Impact</th></tr></thead>
+                <thead><tr><th>Section</th><th>Selected</th></tr></thead>
                 <tbody id="rows"></tbody>
               </table>
             </div>
@@ -425,6 +425,16 @@
       block.className = 'group';
       block.innerHTML = `
         <h3>${idx + 1}. ${section.title}</h3>
+        <div class="section-adjustment">
+          <label for="${section.id}-multiplier">
+            <span>Section multiplier</span>
+            <span class="multiplier-field">
+              <input id="${section.id}-multiplier" class="multiplier-input" type="number" min="0" max="500" step="5" value="0" data-section-multiplier="${section.id}" />
+              <span class="buffer-note">%</span>
+            </span>
+          </label>
+          <p class="section-adjustment-help">Enter a percentage to increase this section’s selected points. Example: 15 adds 15% to this section total.</p>
+        </div>
         <div class="options">
           ${section.options.map((opt, i) => `
             <div class="option">
@@ -435,16 +445,6 @@
               </label>
             </div>
           `).join('')}
-        </div>
-        <div class="section-adjustment">
-          <label for="${section.id}-multiplier">
-            <span>Section multiplier</span>
-            <span class="multiplier-field">
-              <input id="${section.id}-multiplier" class="multiplier-input" type="number" min="0" max="500" step="5" value="0" data-section-multiplier="${section.id}" />
-              <span class="buffer-note">%</span>
-            </span>
-          </label>
-          <p class="section-adjustment-help">Enter a percentage to increase this section’s selected points. Example: 15 adds 15% to this section total.</p>
         </div>`;
       questionRoot.appendChild(block);
     });
@@ -534,11 +534,6 @@
             </div>
           </td>
           <td class="section-choice">${c.label}</td>
-          <td class="section-points">
-            ${formatPoints(c.points)}
-            ${c.multiplierPercent > 0 ? `<span class="point-note">${formatPoints(c.basePoints)} base + ${formatPoints(c.multiplierPercent)}%</span>` : ''}
-          </td>
-          <td class="section-impact">${total > 0 ? ((c.points / total) * 100).toFixed(1) : '0.0'}%</td>
         </tr>`).join('');
       document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li><details><summary>${item.label}</summary><div class="summary-detail">${item.detail}</div></details></li>`).join('');
 
