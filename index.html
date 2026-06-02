@@ -71,13 +71,13 @@
         <form class="panel" id="form">
           <div class="project-intro">
             <h2 class="section-title">Project estimator</h2>
-            <p class="project-copy">Use the questionnaire below to describe the anticipated scope of your Fabric implementation. Each section contributes a hidden weighted value to the total estimate, helping you understand the likely project tier and how close the initiative is to the next level of complexity.</p>
+            <p class="project-copy">Use the questionnaire below to describe the anticipated scope of your Fabric implementation. Each section contributes an estimated hour value or range that rolls up into total estimated hours and timeline.</p>
           </div>
           <ul class="meta-list" aria-label="Questionnaire details">
             <li class="meta-label">Selection: 1 option per section</li>
-            <li class="meta-label">Scoring: hidden weighted values</li>
-            <li class="meta-label">Buffer: optional uplift on total score</li>
-            <li class="meta-label">Bands: XS 40-69 · S 70-94 · M 95-124 · L 125-154 · XL 155+</li>
+            <li class="meta-label">Estimation: per-section hour values and ranges</li>
+            <li class="meta-label">Buffer: optional uplift on total estimated hours</li>
+            <li class="meta-label">Timeline: total estimated hours ÷ 0.7</li>
           </ul>
           <div id="questions"></div>
           <div class="actions">
@@ -94,11 +94,11 @@
 
             <div class="score-pair">
               <div class="score-card">
-                <span>Initial score</span>
+                <span>Estimated hours</span>
                 <div id="score-base" class="score">85</div>
               </div>
               <div class="score-card">
-                <span>Score with buffer</span>
+                <span>Estimated hours with buffer</span>
                 <div id="score-buffered" class="score">85</div>
               </div>
             </div>
@@ -122,19 +122,19 @@
 
             <div class="range-wrap">
               <div class="range-title">
-                <h3>Total score position</h3>
-                <span id="next-tier-note">Next tier starts at 95</span>
+                <h3>Estimate overview</h3>
+                <span id="next-tier-note">Timeline formula: estimated hours ÷ 0.7</span>
               </div>
               <div class="range-scale">
-                <span id="next-tier-label" class="tier-label-top">M starts at 95</span>
+                <span id="next-tier-label" class="tier-label-top"></span>
                 <div class="range">
                   <div id="bar"></div>
                   <div id="next-tier-marker" class="tier-marker"></div>
                 </div>
               </div>
               <div class="tier-label">
-                <span id="current-tier-note">Current tier: S</span>
-                <span id="score-gap-note">10 points to the next tier</span>
+                <span id="current-tier-note">Estimated hours</span>
+                <span id="score-gap-note">Estimated timeline</span>
               </div>
             </div>
 
@@ -152,7 +152,7 @@
               <details>
                 <summary><h3>Section impact summary</h3></summary>
                 <div class="summary-detail">
-                  <p class="muted">Ranked by assigned points. Relative impact is based on the initial score.</p>
+                  <p class="muted">Ranked by adjusted estimated hours. Relative impact is based on initial estimated hours.</p>
                   <ul class="summary-list" id="impact-summary"></ul>
                 </div>
               </details>
@@ -196,29 +196,6 @@
       delivery: '🤝'
     };
 
-    const sizeSummaryMeta = {
-      XS: {
-        hours: { min: 48, max: 83 },
-        timelineWeeks: { min: 1, max: 3 }
-      },
-      S: {
-        hours: { min: 80, max: 250 },
-        timelineWeeks: { min: 2, max: 7 }
-      },
-      M: {
-        hours: { min: 200, max: 500 },
-        timelineWeeks: { min: 5, max: 13 }
-      },
-      L: {
-        hours: { min: 300, max: 800 },
-        timelineWeeks: { min: 8, max: 22 }
-      },
-      XL: {
-        hours: { min: 800, max: null },
-        timelineWeeks: { min: 22, max: null }
-      }
-    };
-
     const timelinePhases = [
       { label: 'Analysis', percent: 0.2 },
       { label: 'Implementation', percent: 0.6 },
@@ -226,179 +203,175 @@
       { label: 'Documentation and Closeout', percent: 0.1 }
     ];
 
-    const withDefaultChoices = (options) => ([
-      ...options,
-      { label: "Don't know", points: 2, sub: 'Use when the information is not available yet.' },
-      { label: 'Not in scope', points: 0, sub: 'Use when this area is not part of the planned delivery.' }
-    ]);
-
     const sections = [
-      { id:'sources', title:'Source systems', options: withDefaultChoices([
-        {label:'1 source system', points:2, sub:'A single upstream platform or application.'},
-        {label:'2-3 source systems', points:5, sub:'A small set of systems with limited integration variety.'},
-        {label:'4-8 source systems', points:10, sub:'Several systems requiring broader ingestion planning.'},
-        {label:'9-15 source systems', points:15, sub:'A wide source landscape with higher coordination effort.'},
-        {label:'16+ source systems', points:20, sub:'A large multi-system estate with substantial integration complexity.'},
-      ])},
-      { id:'objects', title:'Objects to ingest', options: withDefaultChoices([
-        {label:'1-5 objects', points:2, sub:'Very limited ingestion scope, typically a few critical tables or files.'},
-        {label:'6-15 objects', points:5, sub:'A modest ingestion set covering one focused use case.'},
-        {label:'16-50 objects', points:10, sub:'A broader workload with multiple datasets or business entities.'},
-        {label:'51-150 objects', points:15, sub:'A substantial ingestion footprint needing repeatable engineering patterns.'},
-        {label:'151-400 objects', points:18, sub:'A large estate of ingest objects with strong automation needs.'},
-        {label:'400+ objects', points:20, sub:'An enterprise-scale ingestion portfolio.'},
-      ])},
-      { id:'volume', title:'Data volume', options: withDefaultChoices([
-        {label:'Less than 10 GB', points:2, sub:'Small data estate with low storage and processing pressure.'},
-        {label:'10 GB-40 GB', points:5, sub:'Manageable volume with moderate orchestration needs.'},
-        {label:'40 GB-200 GB', points:10, sub:'Meaningful scale requiring stronger performance planning.'},
-        {label:'200 GB-1 TB', points:15, sub:'High-volume workloads with more demanding processing design.'},
-        {label:'1 TB+', points:20, sub:'Very large-scale workloads where optimization is critical.'},
-      ])},
-      { id:'transform', title:'Transformation complexity', options: withDefaultChoices([
-        {label:'Easy', points:5, sub:'Standardization, joins, and light business rules.'},
-        {label:'Low', points:10, sub:'Moderate conformance logic and some reusable transformation patterns.'},
-        {label:'Moderate', points:15, sub:'SCDs, reconciliation, or late-arriving data handling.'},
-        {label:'Complex', points:20, sub:'Cross-domain harmonization or advanced orchestration logic.'},
-      ])},
-      { id:'governance', title:'Governance and security', options: withDefaultChoices([
-        {label:'Basic workspace governance', points:5, sub:'Foundational workspace controls with limited formal governance.'},
-        {label:'RLS, certified items, deployment controls', points:10, sub:'More structured governance and release management expectations.'},
-        {label:'Multi-workspace, lineage, labels, domain design', points:15, sub:'Broader control model spanning multiple teams or domains.'},
-        {label:'Compliance-heavy operating model', points:20, sub:'Formal compliance, stricter controls, and elevated assurance requirements.'},
-      ])},
-      { id:'semantic', title:'Semantic model complexity', options: withDefaultChoices([
-        {label:'Easy', points:5, sub:'Single model with a limited number of measures.'},
-        {label:'Low', points:10, sub:'Several subject areas with a moderate measure set.'},
-        {label:'Moderate', points:15, sub:'Shared semantic layer, RLS, or optimization considerations.'},
-        {label:'Complex', points:20, sub:'Multiple enterprise models with advanced calculations and reuse.'},
-      ])},
-      { id:'reports', title:'Power BI reports', options: withDefaultChoices([
-        {label:'1-3 reports', points:5, sub:'A very small reporting layer with a few focused outputs.'},
-        {label:'4-10 reports', points:10, sub:'A moderate reporting scope supporting a small stakeholder group.'},
-        {label:'11-25 reports', points:15, sub:'A broader report estate with more design and governance effort.'},
-        {label:'26+ reports', points:20, sub:'A large reporting portfolio with significant coordination and maintenance needs.'},
-      ])},
-      { id:'gold', title:'Gold layer objects', options: withDefaultChoices([
-        {label:'1-5 objects', points:5, sub:'A very small presentation layer with a few curated outputs.'},
-        {label:'6-15 objects', points:10, sub:'A modest gold layer serving a focused reporting need.'},
-        {label:'16-40 objects', points:15, sub:'A broader curated layer with multiple output structures.'},
-        {label:'41-100 objects', points:18, sub:'A large gold layer that benefits from stronger design conventions.'},
-        {label:'100+ objects', points:20, sub:'An extensive presentation layer spanning many outputs or domains.'},
-      ])},
-      { id:'latency', title:'Latency expectations', options: withDefaultChoices([
-        {label:'Daily', points:5, sub:'Batch-oriented refresh expectations.'},
-        {label:'Intraday', points:10, sub:'Several updates during the day for fresher reporting.'},
-        {label:'Hourly', points:15, sub:'Frequent refreshes with tighter orchestration windows.'},
-        {label:'Streaming', points:20, sub:'Near-real-time or event-driven processing expectations.'},
-      ])},
-      { id:'methodology', title:'Target methodology', options: withDefaultChoices([
-        {label:'Simple medallion', points:5, sub:'Straightforward layered design pattern.'},
-        {label:'Medallion + Kimball', points:10, sub:'Layered platform combined with dimensional modeling.'},
-        {label:'Hybrid medallion + Data Vault', points:15, sub:'Mixed modeling approach requiring stronger design discipline.'},
-        {label:'Multiple patterns across domains', points:20, sub:'Different modeling approaches used across business domains.'},
-      ])},
-      { id:'delivery', title:'Delivery and stakeholders', options: withDefaultChoices([
-        {label:'Single business unit', points:5, sub:'One team or sponsor group with limited coordination overhead.'},
-        {label:'Several stakeholders', points:10, sub:'A broader group of stakeholders needing regular alignment.'},
-        {label:'Cross-functional delivery', points:15, sub:'Multiple teams or disciplines collaborating across the delivery.'},
-        {label:'Large transformation program', points:20, sub:'Program-level coordination with significant change management needs.'},
-      ])},
+      { id:'sources', title:'Source system', options: [
+        {label:'1', hours:{min:4,max:4}},
+        {label:'2-3', hours:{min:8,max:12}},
+        {label:'4-8', hours:{min:16,max:32}},
+        {label:'9-15', hours:{min:36,max:60}},
+        {label:'16+', hours:{min:64,max:64}},
+        {label:"Don't know", hours:{min:8,max:8}},
+        {label:'Not in scope', hours:{min:1,max:1}},
+      ]},
+      { id:'objects', title:'Objects to ingest', options: [
+        {label:'1-5', hours:{min:2,max:10}},
+        {label:'6-15', hours:{min:12,max:30}},
+        {label:'16-50', hours:{min:32,max:100}},
+        {label:'51-150', hours:{min:102,max:300}},
+        {label:'151-400', hours:{min:302,max:800}},
+        {label:'400+', hours:{min:800,max:800}},
+        {label:"Don't know", hours:{min:40,max:40}},
+        {label:'Not in scope', hours:{min:8,max:8}},
+      ]},
+      { id:'volume', title:'Data volume', options: [
+        {label:'10GB', hours:{min:2,max:2}},
+        {label:'10-40GB', hours:{min:2,max:4}},
+        {label:'40-200GB', hours:{min:4,max:20}},
+        {label:'200GB-1TB', hours:{min:20,max:30}},
+        {label:'1TB+', hours:{min:30,max:30}},
+        {label:"Don't know", hours:{min:5,max:5}},
+        {label:'Not in scope', hours:{min:1,max:1}},
+      ]},
+      { id:'transform', title:'Transformation complexity', options: [
+        {label:'Easy', transform:{objectsPercent:0.10, factorA:2, factorB:1}, sub:'10% of selected Objects to ingest estimate × 2 × 1'},
+        {label:'Low', transform:{objectsPercent:0.15, factorA:4, factorB:1.5}, sub:'15% of selected Objects to ingest estimate × 4 × 1.5'},
+        {label:'Moderate', transform:{objectsPercent:0.40, factorA:5, factorB:2}, sub:'40% of selected Objects to ingest estimate × 5 × 2'},
+        {label:'Complex', transform:{objectsPercent:0.60, factorA:7, factorB:3}, sub:'60% of selected Objects to ingest estimate × 7 × 3'},
+        {label:"Don't know", transform:{objectsPercent:0.15, factorA:3, factorB:1}, sub:'15% of selected Objects to ingest estimate × 3 × 1'},
+        {label:'Not in scope', transform:{objectsPercent:0.10, factorA:1, factorB:1}, sub:'10% of selected Objects to ingest estimate × 1 × 1'},
+      ]},
+      { id:'governance', title:'Governance and security', options: [
+        {label:'Basic', hours:{min:4,max:4}},
+        {label:'RLS, limited Purview', hours:{min:16,max:16}},
+        {label:'Multi workspace, full Purview', hours:{min:60,max:60}},
+        {label:'Compliance heavy', hours:{min:100,max:100}},
+        {label:"Don't know", hours:{min:20,max:20}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
+      { id:'semantic', title:'Semantic model complexity', options: [
+        {label:'Easy', hours:{min:10,max:10}},
+        {label:'Low', hours:{min:16,max:16}},
+        {label:'Moderate', hours:{min:24,max:24}},
+        {label:'Complex', hours:{min:60,max:60}},
+        {label:"Don't know", hours:{min:20,max:20}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
+      { id:'reports', title:'Power BI reports', options: [
+        {label:'1-3', hours:{min:6,max:18}},
+        {label:'4-10', hours:{min:24,max:60}},
+        {label:'11-25', hours:{min:66,max:150}},
+        {label:'26+', hours:{min:156,max:156}},
+        {label:"Don't know", hours:{min:20,max:20}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
+      { id:'gold', title:'Gold layer complexity', options: [
+        {label:'1-5 (Easy)', hours:{min:4,max:20}},
+        {label:'2-8 (Low)', hours:{min:8,max:32}},
+        {label:'5-15 (Moderate)', hours:{min:20,max:60}},
+        {label:'10-80 (Moderate +)', hours:{min:40,max:320}},
+        {label:'50-100 (Complex)', hours:{min:200,max:400}},
+        {label:'100+ (Enterprise)', hours:{min:400,max:400}},
+        {label:"Don't know", hours:{min:30,max:30}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
+      { id:'latency', title:'Latency expectations', options: [
+        {label:'Daily', hours:{min:2,max:2}},
+        {label:'Intra day', hours:{min:3,max:3}},
+        {label:'Hourly', hours:{min:4,max:4}},
+        {label:'Streaming', hours:{min:32,max:32}},
+        {label:"Don't know", hours:{min:5,max:5}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
+      { id:'methodology', title:'Target methodology', options: [
+        {label:'Simple medallion', hours:{min:8,max:8}},
+        {label:'Medalion + Kimball', hours:{min:16,max:16}},
+        {label:'Hybrid medallion', hours:{min:24,max:24}},
+        {label:'Multiple patterns', hours:{min:40,max:40}},
+        {label:"Don't know", hours:{min:0,max:0}},
+        {label:'Not in scope', hours:{min:0,max:0}},
+      ]},
+      { id:'delivery', title:'Delivery and stakeholders', options: [
+        {label:'Single unit', hours:{min:6,max:6}},
+        {label:'Several stakeholders', hours:{min:10,max:10}},
+        {label:'Cross functional', hours:{min:16,max:16}},
+        {label:'Large transformation program', hours:{min:40,max:40}},
+        {label:"Don't know", hours:{min:8,max:8}},
+        {label:'Not in scope', hours:{min:2,max:2}},
+      ]},
     ];
-
-    const interpretations = {
-      XS: [
-        { label: 'Pilot scope', detail: 'A proof-of-value initiative with a very limited footprint, typically targeting a single use case or dataset to validate the approach before broader investment.' },
-        { label: 'Narrow use case', detail: 'The delivery is tightly bounded, with few integration points and a small number of stakeholders or consumers.' },
-        { label: 'Light governance', detail: 'Minimal formal controls are needed; basic workspace setup and standard access management are sufficient for this scale.' }
-      ],
-      S: [
-        { label: 'Department-sized delivery', detail: 'The initiative serves a single business unit or team, with a contained set of sources, outputs, and stakeholders.' },
-        { label: 'Standard design patterns', detail: 'Delivery follows conventional medallion or layered architecture without significant customisation or cross-domain complexity.' },
-        { label: 'Focused stakeholder set', detail: 'A small, well-defined group of sponsors and consumers keeps coordination and change management lightweight.' }
-      ],
-      M: [
-        { label: 'Multi-use-case domain', detail: 'The delivery spans several related use cases or business areas, requiring reusable patterns and shared infrastructure across workloads.' },
-        { label: 'Reusable delivery patterns', detail: 'Engineering effort goes into building consistent, repeatable components that reduce future delivery cost and support platform scaling.' },
-        { label: 'Moderate governance', detail: 'Row-level security, certified datasets, and controlled deployment pipelines are expected as part of the operating model.' }
-      ],
-      L: [
-        { label: 'Broad domain coverage', detail: 'The initiative crosses multiple business domains, involving varied source landscapes, semantic models, and distinct stakeholder groups.' },
-        { label: 'Heavy engineering effort', detail: 'Substantial development work is required across ingestion, transformation, semantic modeling, and reporting layers with strong automation needs.' },
-        { label: 'Structured delivery model', detail: 'Formal delivery governance, phased execution, and dedicated workstream management are likely needed to coordinate the full scope.' }
-      ],
-      XL: [
-        { label: 'Enterprise-scale change', detail: 'The initiative represents a major platform transformation affecting multiple domains, teams, and systems across the organisation over an extended horizon.' },
-        { label: 'Advanced governance needs', detail: 'Compliance-grade controls, multi-workspace architecture, domain design, and formal lineage tracking are required from the outset.' },
-        { label: 'Phased program delivery', detail: 'Delivery is structured as a multi-phase program with workstreams, steering cadences, and long-term roadmap planning to manage complexity.' }
-      ]
-    };
-
-    const tierMeta = {
-      XS: { label: 'Extra small', next: 'S', nextStart: 70 },
-      S: { label: 'Small', next: 'M', nextStart: 95 },
-      M: { label: 'Medium', next: 'L', nextStart: 125 },
-      L: { label: 'Large', next: 'XL', nextStart: 155 },
-      XL: { label: 'Extra large', next: null, nextStart: null }
-    };
-
-    function getTier(score){
-      if(score <= 69) return 'XS';
-      if(score <= 94) return 'S';
-      if(score <= 124) return 'M';
-      if(score <= 154) return 'L';
-      return 'XL';
-    }
-
-    function getNarrative(tier){
-      return {
-        XS:'A very small Fabric initiative, usually a pilot or tightly scoped proof of value.',
-        S:'A focused Fabric implementation with limited complexity and a standard delivery model.',
-        M:'A meaningful Fabric delivery with several moving parts, repeatable patterns, and moderate architecture depth.',
-        L:'A large Fabric initiative with broad scope, heavier governance, and substantial semantic, reporting, and engineering effort.',
-        XL:'An enterprise-scale Fabric transformation with high complexity across platform, governance, reporting, and delivery model.'
-      }[tier];
-    }
-
-    function formatRange(min, max, suffix = '') {
-      if(max === null || max === undefined) return `${min}${suffix}+`;
-      if(min === max) return `${min}${suffix}`;
-      return `${min}${suffix} - ${max}${suffix}`;
-    }
 
     function roundScore(value) {
       return Math.round(value * 100) / 100;
     }
 
-    function formatPoints(value) {
+    function formatHoursValue(value) {
       return roundScore(value).toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
     }
 
-    function renderSizeSummary(tier) {
-      const meta = sizeSummaryMeta[tier];
+    function formatHoursRange(range) {
+      if(range.min === range.max) return `${formatHoursValue(range.min)} h`;
+      return `${formatHoursValue(range.min)} - ${formatHoursValue(range.max)} h`;
+    }
+
+    function getRangeTotal(range) {
+      return (range.min + range.max) / 2;
+    }
+
+    function multiplyRange(range, factor) {
+      return {
+        min: roundScore(range.min * factor),
+        max: roundScore(range.max * factor)
+      };
+    }
+
+    function addRanges(left, right) {
+      return {
+        min: roundScore(left.min + right.min),
+        max: roundScore(left.max + right.max)
+      };
+    }
+
+    function divideRange(range, divisor) {
+      return {
+        min: roundScore(range.min / divisor),
+        max: roundScore(range.max / divisor)
+      };
+    }
+
+    function getOptionHours(sectionId, option, selectedBySection) {
+      if(sectionId !== 'transform') return option.hours;
+      const objectsEstimate = selectedBySection.objects?.baseHours || { min: 0, max: 0 };
+      const transformFactor = option.transform.objectsPercent * option.transform.factorA * option.transform.factorB;
+      return {
+        min: roundScore(objectsEstimate.min * transformFactor),
+        max: roundScore(objectsEstimate.max * transformFactor)
+      };
+    }
+
+    function renderSizeSummary(totalRange, bufferedRange, timelineRange) {
       const hoursSummary = document.getElementById('hours-summary');
       const timelineSummary = document.getElementById('timeline-summary');
       const timelineTotal = document.getElementById('timeline-total');
-      const timelineMax = meta.timelineWeeks.max ?? meta.timelineWeeks.min;
+      const timelineMax = Math.max(timelineRange.min, timelineRange.max);
 
       hoursSummary.innerHTML = `
         <tr>
-          <th>Project size</th>
-          <td>${tier} · ${tierMeta[tier].label}</td>
+          <th>Estimated hours</th>
+          <td>${formatHoursRange(totalRange)}</td>
         </tr>
         <tr>
-          <th>Hours range</th>
-          <td>${formatRange(meta.hours.min, meta.hours.max, ' h')}</td>
+          <th>Hours with buffer</th>
+          <td>${formatHoursRange(bufferedRange)}</td>
         </tr>
         <tr>
           <th>Total timeline</th>
-          <td>${formatRange(meta.timelineWeeks.min, meta.timelineWeeks.max, ' weeks')}</td>
+          <td>${formatHoursRange(timelineRange)} (hours ÷ 0.7)</td>
         </tr>`;
 
-      timelineTotal.textContent = `Total timeline: ${formatRange(meta.timelineWeeks.min, meta.timelineWeeks.max, ' weeks')}`;
+      timelineTotal.textContent = `Total timeline: ${formatHoursRange(timelineRange)} (estimated hours ÷ 0.7)`;
 
       let currentStart = 0;
       timelineSummary.innerHTML = timelinePhases.map(phase => {
@@ -407,10 +380,14 @@
         currentStart = end;
         const leftPercent = (start / timelineMax) * 100;
         const widthPercent = ((end - start) / timelineMax) * 100;
+        const phaseRange = {
+          min: roundScore(timelineRange.min * phase.percent),
+          max: roundScore(timelineRange.max * phase.percent)
+        };
 
         return `
           <div class="timeline-row">
-            <div class="timeline-phase">${phase.label}</div>
+            <div class="timeline-phase">${phase.label}<br><span class="muted">${formatHoursRange(phaseRange)}</span></div>
             <div class="timeline-bar-track">
               <div class="timeline-bar-range" style="left:${leftPercent}%; width:${widthPercent}%"></div>
             </div>
@@ -420,7 +397,7 @@
 
     const questionRoot = document.getElementById('questions');
     sections.forEach((section, idx) => {
-      const defaultIndex = section.options.findIndex(option => option.points > 0);
+      const defaultIndex = 0;
       const block = document.createElement('section');
       block.className = 'group';
       block.innerHTML = `
@@ -433,12 +410,12 @@
               <span class="buffer-note">%</span>
             </span>
           </label>
-          <p class="section-adjustment-help">Enter a percentage to increase this section’s selected points. Example: 15 adds 15% to this section total.</p>
+          <p class="section-adjustment-help">Enter a percentage to increase this section’s selected hour estimate. Example: 15 adds 15% to this section total.</p>
         </div>
         <div class="options">
           ${section.options.map((opt, i) => `
             <div class="option">
-              <input type="radio" name="${section.id}" id="${section.id}-${i}" value="${opt.points}" data-label="${opt.label}" ${i === defaultIndex ? 'checked' : ''}>
+              <input type="radio" name="${section.id}" id="${section.id}-${i}" value="${i}" data-label="${opt.label}" ${i === defaultIndex ? 'checked' : ''}>
               <label for="${section.id}-${i}">
                 <span class="option-title">${opt.label}</span>
                 ${opt.sub ? `<span class="sub">${opt.sub}</span>` : ''}
@@ -453,78 +430,67 @@
 
     function getBufferedScore(total){
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
-      return roundScore(total * (1 + bufferPercent / 100));
+      return multiplyRange(total, (1 + bufferPercent / 100));
     }
 
-    function updateTierProgress(bufferedTotal, tier){
-      const meta = tierMeta[tier];
+    function updateEstimateOverview(totalRange, bufferedRange, timelineRange){
       const nextMarker = document.getElementById('next-tier-marker');
       const nextTierLabel = document.getElementById('next-tier-label');
       const currentTierNote = document.getElementById('current-tier-note');
       const nextTierNote = document.getElementById('next-tier-note');
       const scoreGapNote = document.getElementById('score-gap-note');
-      document.getElementById('bar').style.width = Math.min(100, (bufferedTotal / 220) * 100) + '%';
-      currentTierNote.textContent = `Current tier: ${tier} · ${meta.label}`;
-
-      if(meta.nextStart){
-        const markerPosition = Math.min(100, (meta.nextStart / 220) * 100);
-        nextMarker.style.display = 'block';
-        nextTierLabel.style.display = 'block';
-        nextMarker.style.left = markerPosition + '%';
-        nextTierLabel.style.left = markerPosition + '%';
-        nextTierLabel.textContent = `${meta.next} starts at ${meta.nextStart}`;
-        const distance = Math.max(0, meta.nextStart - bufferedTotal);
-        nextTierNote.textContent = `Next tier starts at ${meta.nextStart}`;
-        scoreGapNote.textContent = distance === 0
-          ? `At the ${meta.next} threshold`
-          : `${formatPoints(distance)} point${distance === 1 ? '' : 's'} to the next tier`;
-      } else {
-        nextMarker.style.display = 'none';
-        nextTierLabel.style.display = 'none';
-        nextTierNote.textContent = 'Top sizing tier reached';
-        scoreGapNote.textContent = 'No higher tier remaining';
-      }
+      document.getElementById('bar').style.width = Math.min(100, (bufferedRange.max / 2000) * 100) + '%';
+      currentTierNote.textContent = `Estimated hours: ${formatHoursRange(bufferedRange)}`;
+      nextTierNote.textContent = `Timeline formula: estimated hours ÷ 0.7`;
+      scoreGapNote.textContent = `Estimated timeline: ${formatHoursRange(timelineRange)}`;
+      nextMarker.style.display = 'none';
+      nextTierLabel.style.display = 'none';
     }
 
     function calculate(){
       const chosen = [];
-      let total = 0;
+      const selectedBySection = {};
+      let total = { min: 0, max: 0 };
       sections.forEach(section => {
         const input = document.querySelector(`input[name="${section.id}"]:checked`);
-        const basePoints = Number(input.value);
-        const option = section.options.find(o => o.label === input.dataset.label && o.points === basePoints);
+        const option = section.options[Number(input.value)];
         const multiplierInput = document.querySelector(`[data-section-multiplier="${section.id}"]`);
         const multiplierPercent = Math.max(0, Number(multiplierInput?.value) || 0);
-        const points = roundScore(basePoints * (1 + multiplierPercent / 100));
-        total += points;
+        const baseHours = getOptionHours(section.id, option, selectedBySection);
+        const hours = multiplyRange(baseHours, 1 + multiplierPercent / 100);
+        total = addRanges(total, hours);
+        selectedBySection[section.id] = {
+          option,
+          baseHours,
+          hours
+        };
         chosen.push({
           sectionId: section.id,
           section: section.title,
-          label: option ? option.label : input.dataset.label,
-          basePoints,
+          label: option.label,
+          baseHours,
           multiplierPercent,
-          points
+          hours
         });
       });
 
-      total = roundScore(total);
       const bufferedTotal = getBufferedScore(total);
-      const tier = getTier(bufferedTotal);
+      const timelineTotal = divideRange(bufferedTotal, 0.7);
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
 
-      document.getElementById('score-base').textContent = formatPoints(total);
-      document.getElementById('score-buffered').textContent = formatPoints(bufferedTotal);
-      document.getElementById('narrative').textContent = getNarrative(tier);
+      document.getElementById('score-base').textContent = formatHoursRange(total);
+      document.getElementById('score-buffered').textContent = formatHoursRange(bufferedTotal);
+      document.getElementById('narrative').textContent = 'Transformation complexity is derived from the selected Objects to ingest estimate using the formula shown in each transformation option.';
       document.getElementById('buffer-summary').textContent = bufferPercent > 0
-        ? `Safety buffer of ${bufferPercent}% adds ${formatPoints(bufferedTotal - total)} points to the initial estimate.`
+        ? `Safety buffer of ${bufferPercent}% adds ${formatHoursRange({ min: bufferedTotal.min - total.min, max: bufferedTotal.max - total.max })} to the initial estimate.`
         : 'No safety buffer applied.';
 
       const badge = document.getElementById('badge');
-      badge.className = 'badge ' + tier.toLowerCase();
-      badge.textContent = `${tier} · ${tierMeta[tier].label}`;
+      badge.className = 'badge m';
+      badge.textContent = 'Hours model';
 
-      updateTierProgress(bufferedTotal, tier);
-      renderSizeSummary(tier);
+      updateEstimateOverview(total, bufferedTotal, timelineTotal);
+      renderSizeSummary(total, bufferedTotal, timelineTotal);
       document.getElementById('rows').innerHTML = chosen.map(c => `
         <tr>
           <td>
@@ -535,36 +501,40 @@
           </td>
           <td class="section-choice">${c.label}</td>
         </tr>`).join('');
-      document.getElementById('summary').innerHTML = interpretations[tier].map(item => `<li><details><summary>${item.label}</summary><div class="summary-detail">${item.detail}</div></details></li>`).join('');
+      document.getElementById('summary').innerHTML = [
+        'Each section contributes an hour estimate or hour range.',
+        'Section multipliers apply to the selected section estimate before totals are calculated.',
+        'Total timeline is calculated as estimated hours divided by 0.7.'
+      ].map(item => `<li><details><summary>${item}</summary></details></li>`).join('');
 
       const ranked = [...chosen]
-        .sort((a, b) => b.points - a.points || a.section.localeCompare(b.section))
+        .sort((a, b) => getRangeTotal(b.hours) - getRangeTotal(a.hours) || a.section.localeCompare(b.section))
         .map(item => ({
           ...item,
-          impact: total > 0 ? (item.points / total) * 100 : 0
+          impact: getRangeTotal(total) > 0 ? (getRangeTotal(item.hours) / getRangeTotal(total)) * 100 : 0
         }));
-      const maxPoints = ranked.length ? ranked[0].points : 0;
+      const maxHours = ranked.length ? getRangeTotal(ranked[0].hours) : 0;
       document.getElementById('impact-summary').innerHTML = ranked.map(item => {
-        const highestImpact = maxPoints > 0 && item.points === maxPoints;
+        const highestImpact = maxHours > 0 && getRangeTotal(item.hours) === maxHours;
         return `<li>
           <details class="${highestImpact ? 'impact-top' : ''}" ${highestImpact ? 'open' : ''}>
             <summary>
               <span>${item.section}</span>
-              <span class="summary-metric">${formatPoints(item.points)} pts · ${item.impact.toFixed(1)}%</span>
+              <span class="summary-metric">${formatHoursRange(item.hours)} · ${item.impact.toFixed(1)}%</span>
             </summary>
             <div class="summary-detail">
               <div><strong>Selected option:</strong> ${item.label}</div>
-              <div><strong>Base points:</strong> ${formatPoints(item.basePoints)}</div>
-              <div><strong>Section multiplier:</strong> ${formatPoints(item.multiplierPercent)}%</div>
-              <div><strong>Assigned points:</strong> ${formatPoints(item.points)}</div>
-              <div><strong>Relative impact:</strong> ${item.impact.toFixed(1)}% of initial score</div>
+              <div><strong>Base hours:</strong> ${formatHoursRange(item.baseHours)}</div>
+              <div><strong>Section multiplier:</strong> ${formatHoursValue(item.multiplierPercent)}%</div>
+              <div><strong>Adjusted hours:</strong> ${formatHoursRange(item.hours)}</div>
+              <div><strong>Relative impact:</strong> ${item.impact.toFixed(1)}% of initial estimated hours</div>
               ${highestImpact ? '<div><span class="impact-flag">Highest impact</span></div>' : ''}
             </div>
           </details>
         </li>`;
       }).join('');
 
-      const top = [...chosen].sort((a,b) => b.points - a.points).slice(0,4);
+      const top = [...chosen].sort((a,b) => getRangeTotal(b.hours) - getRangeTotal(a.hours)).slice(0,4);
       document.getElementById('highlights').innerHTML = top.map(item => `
         <div class="mini">
           <div class="mini-head">
