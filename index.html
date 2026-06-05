@@ -76,7 +76,7 @@
             <li class="meta-label">Selection: 1 option per section</li>
             <li class="meta-label">Estimation: upper-bound hour values</li>
             <li class="meta-label">Buffer: optional uplift on total estimated hours</li>
-            <li class="meta-label">Timeline: 0.7 × total hours</li>
+            <li class="meta-label">Timeline: (hours ÷ 0.7) ÷ 40</li>
           </ul>
           <div id="questions"></div>
           <div class="actions">
@@ -93,12 +93,12 @@
 
             <div class="score-pair">
               <div class="score-card">
-                <span>Estimated hours</span>
-                <div id="score-base" class="score">0</div>
+                <span>Estimated range</span>
+                <div id="score-range" class="score">XS</div>
               </div>
               <div class="score-card">
-                <span>Estimated timeline in weeks</span>
-                <div id="score-weeks" class="score">0</div>
+                <span>Estimated timeline</span>
+                <div id="score-weeks" class="score">0 weeks</div>
               </div>
             </div>
 
@@ -122,7 +122,7 @@
             <div class="range-wrap">
               <div class="range-title">
                 <h3>Estimate overview</h3>
-                <span id="next-tier-note">Timeline formula: 0.7 × total hours</span>
+                <span id="next-tier-note">Timeline formula: (hours ÷ 0.7) ÷ 40</span>
               </div>
               <div class="range-scale">
                 <span id="next-tier-label" class="tier-label-top"></span>
@@ -132,8 +132,8 @@
                 </div>
               </div>
               <div class="tier-label">
-                <span id="current-tier-note">Estimated hours</span>
-                <span id="score-gap-note">Estimated timeline in weeks</span>
+                <span id="current-tier-note">Estimated range</span>
+                <span id="score-gap-note">Estimated timeline</span>
               </div>
             </div>
 
@@ -310,6 +310,10 @@
       return roundUp(value).toLocaleString();
     }
 
+    function formatWeeks(value) {
+      return `${formatWhole(value)} weeks`;
+    }
+
     function multiplyHours(hours, factor) {
       return roundUp(hours * factor);
     }
@@ -329,12 +333,23 @@
       return '—';
     }
 
+    function getTshirtRange(label) {
+      const band = tshirtBands.find(item => item.label === label);
+      if (!band) return '—';
+      if (band.to === Infinity) return `${band.label} (${formatWhole(band.from)}+)`;
+      return `${band.label} (${formatWhole(band.from)}-${formatWhole(band.to)})`;
+    }
+
+    function calculateTimelineWeeks(hours) {
+      return roundUp((hours / 0.7) / 40);
+    }
+
     function renderTimeline(totalWeeks) {
       const timelineSummary = document.getElementById('timeline-summary');
       const timelineTotal = document.getElementById('timeline-total');
       const maxWeeks = Math.max(totalWeeks, 1);
 
-      timelineTotal.textContent = `Total timeline: ${formatWhole(totalWeeks)} weeks (0.7 × total hours)`;
+      timelineTotal.textContent = `Total timeline: ${formatWeeks(totalWeeks)} ((hours ÷ 0.7) ÷ 40)`;
 
       let currentStart = 0;
       timelineSummary.innerHTML = timelinePhases.map(phase => {
@@ -347,7 +362,7 @@
 
         return `
           <div class="timeline-row">
-            <div class="timeline-phase">${phase.label}<br><span class="muted">${formatWhole(phaseWeeks)} weeks</span></div>
+            <div class="timeline-phase">${phase.label}<br><span class="muted">${formatWeeks(phaseWeeks)}</span></div>
             <div class="timeline-bar-track">
               <div class="timeline-bar-range" style="left:${leftPercent}%; width:${widthPercent}%"></div>
             </div>
@@ -388,16 +403,16 @@
 
     const bufferInput = document.getElementById('buffer');
 
-    function updateEstimateOverview(totalHours, totalWeeks) {
+    function updateEstimateOverview(totalHours, totalWeeks, tshirt) {
       const nextMarker = document.getElementById('next-tier-marker');
       const nextTierLabel = document.getElementById('next-tier-label');
       const currentTierNote = document.getElementById('current-tier-note');
       const nextTierNote = document.getElementById('next-tier-note');
       const scoreGapNote = document.getElementById('score-gap-note');
       document.getElementById('bar').style.width = Math.min(100, (totalHours / 2000) * 100) + '%';
-      currentTierNote.textContent = `Estimated hours: ${formatWhole(totalHours)}`;
-      nextTierNote.textContent = 'Timeline formula: 0.7 × total hours';
-      scoreGapNote.textContent = `Estimated timeline in weeks: ${formatWhole(totalWeeks)}`;
+      currentTierNote.textContent = `Estimated range: ${getTshirtRange(tshirt)}`;
+      nextTierNote.textContent = 'Timeline formula: (hours ÷ 0.7) ÷ 40';
+      scoreGapNote.textContent = `Estimated timeline: ${formatWeeks(totalWeeks)}`;
       nextMarker.style.display = 'none';
       nextTierLabel.style.display = 'none';
     }
@@ -432,11 +447,12 @@
 
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
       const bufferedTotalHours = multiplyHours(totalHours, 1 + bufferPercent / 100);
-      const totalWeeks = roundUp(0.7 * bufferedTotalHours);
+      const totalWeeks = calculateTimelineWeeks(bufferedTotalHours);
       const tshirt = getTshirt(bufferedTotalHours);
+      const tshirtRange = getTshirtRange(tshirt);
 
-      document.getElementById('score-base').textContent = formatWhole(bufferedTotalHours);
-      document.getElementById('score-weeks').textContent = formatWhole(totalWeeks);
+      document.getElementById('score-range').textContent = tshirtRange;
+      document.getElementById('score-weeks').textContent = formatWeeks(totalWeeks);
       document.getElementById('narrative').textContent = 'Transformation complexity is derived from the selected Objects to ingest estimate using the formula shown in each transformation option.';
       document.getElementById('buffer-summary').textContent = bufferPercent > 0
         ? `Safety buffer of ${formatWhole(bufferPercent)}% adds ${formatWhole(bufferedTotalHours - totalHours)} hours to the estimate.`
@@ -446,7 +462,7 @@
       badge.className = `badge ${tshirt.toLowerCase()}`;
       badge.textContent = tshirt;
 
-      updateEstimateOverview(bufferedTotalHours, totalWeeks);
+      updateEstimateOverview(bufferedTotalHours, totalWeeks, tshirt);
       renderTimeline(totalWeeks);
 
       document.getElementById('hours-summary').innerHTML = `
@@ -455,12 +471,12 @@
           <td>${formatWhole(bufferedTotalHours)}</td>
         </tr>
         <tr>
-          <th>T-shirt size</th>
-          <td>${tshirt}</td>
+          <th>Estimated range</th>
+          <td>${tshirtRange}</td>
         </tr>
         <tr>
-          <th>Total timeline</th>
-          <td>${formatWhole(totalWeeks)} weeks</td>
+          <th>Estimated timeline</th>
+          <td>${formatWeeks(totalWeeks)}</td>
         </tr>`;
 
       document.getElementById('rows').innerHTML = chosen.map(c => `
