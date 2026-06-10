@@ -36,7 +36,7 @@
     .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .85rem;border-radius:999px;font-weight:700;font-size:var(--text-sm)} .xs,.s,.m,.l,.xl{background:var(--color-primary-soft);color:var(--color-primary-strong)}
     .score-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)} .score-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .score-card span{color:var(--color-text-muted);display:block;margin-bottom:.35rem} .score{font-size:var(--text-base);font-weight:800;word-break:break-word}
     .buffer-box{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .buffer-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--space-3)}
-    .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative;padding-top:1.1rem}.range-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4)} .range{position:relative;height:14px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),var(--color-accent))} .tier-marker{position:absolute;top:.2rem;width:2px;height:18px;background:var(--color-accent)} .tier-label{display:flex;justify-content:space-between;color:var(--color-text-muted);font-size:var(--text-sm)} .tier-label-top{position:absolute;top:0;transform:translateX(-50%);font-size:var(--text-xs);color:var(--color-text-muted)}
+    .muted{color:var(--color-text-muted)} .range-wrap{display:grid;gap:var(--space-2)} .range-scale{position:relative;padding-top:1.1rem}.range-title{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4)} .range{position:relative;height:14px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden} #bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),var(--color-accent))} .tier-marker{position:absolute;top:1.1rem;width:2px;height:14px;background:var(--color-accent)} .tier-label{display:flex;justify-content:space-between;color:var(--color-text-muted);font-size:var(--text-sm)} .tier-label-top{position:absolute;top:0;transform:translateX(-50%);font-size:var(--text-xs);color:var(--color-text-muted);white-space:nowrap;font-weight:700}
     .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-2)} .mini{padding:var(--space-4);border-radius:var(--radius-lg);background:linear-gradient(135deg,color-mix(in srgb,var(--color-primary) 10%,var(--color-surface-offset)),var(--color-surface-offset))} .mini-head{display:flex;align-items:center;gap:.5rem;color:var(--color-text-muted);margin-bottom:.4rem}
     .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left} .score-table td{padding:.7rem .8rem;background:var(--color-surface-offset)} .score-table td:first-child{border-radius:14px 0 0 14px}.score-table td:last-child{border-radius:0 14px 14px 0}.section-cell{display:flex;align-items:center;gap:.6rem}.section-icon{font-size:1.1rem}.section-choice{font-weight:700}
     .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);padding:.85rem 1rem} .summary-list summary{cursor:pointer;font-weight:700}
@@ -127,8 +127,8 @@
                 <span id="next-tier-label" class="tier-label-top"></span>
                 <div class="range">
                   <div id="bar"></div>
-                  <div id="next-tier-marker" class="tier-marker"></div>
                 </div>
+                <div id="next-tier-marker" class="tier-marker"></div>
               </div>
               <div class="tier-label">
                 <span id="current-tier-note">Estimated range</span>
@@ -409,12 +409,29 @@
       const currentTierNote = document.getElementById('current-tier-note');
       const nextTierNote = document.getElementById('next-tier-note');
       const scoreGapNote = document.getElementById('score-gap-note');
-      document.getElementById('bar').style.width = Math.min(100, (totalHours / 2000) * 100) + '%';
+      const maxBarHours = 2000;
+      document.getElementById('bar').style.width = Math.min(100, (totalHours / maxBarHours) * 100) + '%';
       currentTierNote.textContent = `Estimated range: ${getTshirtRange(tshirt)}`;
       nextTierNote.textContent = getTimelineRange(tshirt);
       scoreGapNote.textContent = `Estimated timeline: ${getTimelineRange(tshirt)}`;
-      nextMarker.style.display = 'none';
-      nextTierLabel.style.display = 'none';
+
+      const currentBandIndex = tshirtBands.findIndex(b => b.label === tshirt);
+      const nextBand = currentBandIndex >= 0 && currentBandIndex < tshirtBands.length - 1
+        ? tshirtBands[currentBandIndex + 1]
+        : null;
+
+      if (nextBand && nextBand.from <= maxBarHours) {
+        const additionalHours = nextBand.from - totalHours;
+        const markerPercent = (nextBand.from / maxBarHours) * 100;
+        nextMarker.style.display = 'block';
+        nextMarker.style.left = markerPercent + '%';
+        nextTierLabel.style.display = 'block';
+        nextTierLabel.style.left = markerPercent + '%';
+        nextTierLabel.textContent = `${nextBand.label} (+${formatWhole(additionalHours)}h)`;
+      } else {
+        nextMarker.style.display = 'none';
+        nextTierLabel.style.display = 'none';
+      }
     }
 
     function calculate() {
