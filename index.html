@@ -41,8 +41,9 @@
     .score-table{width:100%;border-collapse:separate;border-spacing:0 .65rem;font-size:var(--text-sm)} .score-table th{padding:.2rem .4rem;color:var(--color-text-muted);font-weight:700;text-align:left} .score-table td{padding:.7rem .8rem;background:var(--color-surface-offset)} .score-table td:first-child{border-radius:14px 0 0 14px}.score-table td:last-child{border-radius:0 14px 14px 0}.section-cell{display:flex;align-items:center;gap:.6rem}.section-icon{font-size:1.1rem}.section-choice{font-weight:700}
     .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);padding:.85rem 1rem} .summary-list summary{cursor:pointer;font-weight:700}
     .summary-stack{display:grid;gap:var(--space-4)} .summary-stack>details{border:1px solid var(--color-divider);border-radius:var(--radius-lg);background:var(--color-surface-offset);overflow:hidden} .summary-stack>details>summary{padding:1rem 1.1rem;cursor:pointer;font-weight:700} .summary-detail{display:grid;gap:.75rem;padding:0 1.1rem 1rem}.summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .summary-card table{width:100%;border-collapse:collapse} .summary-card th,.summary-card td{text-align:left;padding:.45rem 0;vertical-align:top;border-bottom:1px solid var(--color-divider)} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none} .summary-metric{color:var(--color-text-muted);font-size:var(--text-sm)} .impact-flag{display:inline-flex;align-items:center;padding:.25rem .6rem;border-radius:999px;background:var(--color-primary-soft);color:var(--color-primary-strong);font-size:var(--text-sm);font-weight:700}
-    .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:160px 1fr;gap:var(--space-3);align-items:center} .timeline-bar-track{position:relative;height:12px;border-radius:999px;background:var(--color-surface-2);overflow:hidden} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),var(--color-accent))}
-    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:720px){.container{width:min(100% - 1.25rem,1180px)}.score-pair,.mini-grid{grid-template-columns:1fr}.timeline-row{grid-template-columns:1fr}.section-adjustment label,.buffer-row,.range-title,.header-inner{grid-template-columns:1fr;display:grid;justify-content:stretch}.theme-toggle{justify-content:center}}
+    .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:160px 1fr auto;gap:var(--space-3);align-items:center} .timeline-bar-track{position:relative;height:12px;border-radius:999px;background:var(--color-surface-2);overflow:hidden} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),var(--color-accent))}
+    .fte-role-row{display:flex;gap:.5rem;align-items:center;margin-top:.5rem} .fte-role-name{flex:1;min-width:0;border:1px solid var(--color-border);background:var(--color-surface);border-radius:12px;padding:.55rem .7rem;color:var(--color-text);font:inherit} .fte-role-pct{width:72px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:12px;padding:.55rem .7rem;color:var(--color-text);font:inherit} .btn-icon{border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);padding:.4rem .6rem;border-radius:10px;cursor:pointer;line-height:1;font:inherit} .timeline-phase-weeks{font-size:var(--text-sm);color:var(--color-text-muted);white-space:nowrap;text-align:right}
+    @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:720px){.container{width:min(100% - 1.25rem,1180px)}.score-pair,.mini-grid{grid-template-columns:1fr}.timeline-row{grid-template-columns:1fr}.timeline-phase-weeks{display:none}.section-adjustment label,.buffer-row,.range-title,.header-inner{grid-template-columns:1fr;display:grid;justify-content:stretch}.theme-toggle{justify-content:center}.fte-role-row{flex-wrap:wrap}}
   </style>
 </head>
 <body>
@@ -112,6 +113,17 @@
                 </label>
               </div>
               <p id="buffer-summary" class="muted">No safety buffer applied.</p>
+            </div>
+
+            <div class="buffer-box" id="fte-box">
+              <div class="buffer-row">
+                <div>
+                  <h3>FTE roles</h3>
+                </div>
+                <button type="button" class="btn" id="add-role-btn" style="white-space:nowrap">+ Add role</button>
+              </div>
+              <div id="fte-roles-list"></div>
+              <p id="fte-ratio-summary" class="buffer-note muted">No roles added. Timeline uses baseline estimate.</p>
             </div>
 
             <div>
@@ -345,20 +357,66 @@
       return `${minWeeks}–${maxWeeks} weeks`;
     }
 
-    function renderTimeline(totalWeeks, tshirt) {
+    let fteRoles = [];
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function getFTERatio() {
+      if (fteRoles.length === 0) return 1;
+      const sum = fteRoles.reduce((acc, r) => acc + (r.percent || 0), 0);
+      if (sum <= 0) return 1;
+      return (sum / 100) / 0.8;
+    }
+
+    function getAdjustedTimelineRange(tshirt, ratio) {
+      const band = tshirtBands.find(b => b.label === tshirt);
+      if (!band) return '—';
+      const minWeeks = Math.ceil((band.from / 0.7) / 40);
+      if (band.to === Infinity) {
+        return `${Math.ceil(minWeeks / ratio)}+ weeks`;
+      }
+      const maxWeeks = Math.floor((band.to / 0.7) / 40);
+      return `${Math.ceil(minWeeks / ratio)}–${Math.floor(maxWeeks / ratio)} weeks`;
+    }
+
+    function renderFTERoles() {
+      const list = document.getElementById('fte-roles-list');
+      list.innerHTML = fteRoles.map((role, idx) => `
+        <div class="fte-role-row">
+          <input type="text" class="fte-role-name" placeholder="Role name" value="${escapeHtml(role.name)}" data-fte-name="${idx}" />
+          <input type="number" class="fte-role-pct" min="1" max="200" step="5" value="${role.percent}" data-fte-pct="${idx}" />
+          <span class="buffer-note">%</span>
+          <button type="button" class="btn-icon" data-fte-remove="${idx}" aria-label="Remove role">✕</button>
+        </div>
+      `).join('');
+      const sum = fteRoles.reduce((acc, r) => acc + (r.percent || 0), 0);
+      const ratio = getFTERatio();
+      const summaryEl = document.getElementById('fte-ratio-summary');
+      if (fteRoles.length === 0) {
+        summaryEl.textContent = 'No roles added. Timeline uses baseline estimate.';
+      } else {
+        summaryEl.textContent = `Total: ${sum}% → ratio ${ratio.toFixed(2)} (÷ 0.8 parallel factor)`;
+      }
+    }
+
+    function renderTimeline(totalWeeks, tshirt, ratio) {
+      const fteRatio = ratio || 1;
+      const adjustedTotalWeeks = Math.max(Math.ceil(totalWeeks / fteRatio), 1);
       const timelineSummary = document.getElementById('timeline-summary');
       const timelineTotal = document.getElementById('timeline-total');
-      const maxWeeks = Math.max(totalWeeks, 1);
 
-      timelineTotal.textContent = `Total estimated timeline: ${getTimelineRange(tshirt)}`;
+      timelineTotal.textContent = `Total estimated timeline: ${getAdjustedTimelineRange(tshirt, fteRatio)}`;
 
       let currentStart = 0;
       timelineSummary.innerHTML = timelinePhases.map(phase => {
+        const phaseWeeks = Math.ceil(phase.percent * adjustedTotalWeeks);
         const start = currentStart;
-        const end = currentStart + phase.percent * maxWeeks;
+        const end = currentStart + phase.percent * adjustedTotalWeeks;
         currentStart = end;
-        const leftPercent = (start / maxWeeks) * 100;
-        const widthPercent = ((end - start) / maxWeeks) * 100;
+        const leftPercent = (start / adjustedTotalWeeks) * 100;
+        const widthPercent = ((end - start) / adjustedTotalWeeks) * 100;
 
         return `
           <div class="timeline-row">
@@ -366,6 +424,7 @@
             <div class="timeline-bar-track">
               <div class="timeline-bar-range" style="left:${leftPercent}%; width:${widthPercent}%"></div>
             </div>
+            <div class="timeline-phase-weeks">~${phaseWeeks}w</div>
           </div>`;
       }).join('');
     }
@@ -403,7 +462,8 @@
 
     const bufferInput = document.getElementById('buffer');
 
-    function updateEstimateOverview(totalHours, tshirt) {
+    function updateEstimateOverview(totalHours, tshirt, ratio) {
+      const fteRatio = ratio || 1;
       const nextMarker = document.getElementById('next-tier-marker');
       const nextTierLabel = document.getElementById('next-tier-label');
       const currentTierNote = document.getElementById('current-tier-note');
@@ -412,8 +472,8 @@
       const maxBarHours = 2000;
       document.getElementById('bar').style.width = Math.min(100, (totalHours / maxBarHours) * 100) + '%';
       currentTierNote.textContent = `Estimated range: ${getTshirtRange(tshirt)}`;
-      nextTierNote.textContent = getTimelineRange(tshirt);
-      scoreGapNote.textContent = `Estimated timeline: ${getTimelineRange(tshirt)}`;
+      nextTierNote.textContent = getAdjustedTimelineRange(tshirt, fteRatio);
+      scoreGapNote.textContent = `Estimated timeline: ${getAdjustedTimelineRange(tshirt, fteRatio)}`;
 
       const currentBandIndex = tshirtBands.findIndex(b => b.label === tshirt);
       const nextBand = currentBandIndex >= 0 && currentBandIndex < tshirtBands.length - 1
@@ -467,9 +527,10 @@
       const totalWeeks = calculateTimelineWeeks(bufferedTotalHours);
       const tshirt = getTshirt(bufferedTotalHours);
       const tshirtRange = getTshirtRange(tshirt);
+      const ratio = getFTERatio();
 
       document.getElementById('score-range').textContent = tshirtRange;
-      document.getElementById('score-weeks').textContent = getTimelineRange(tshirt);
+      document.getElementById('score-weeks').textContent = getAdjustedTimelineRange(tshirt, ratio);
       document.getElementById('narrative').textContent = 'Transformation complexity is derived from the selected Objects to ingest estimate using the formula shown in each transformation option.';
       document.getElementById('buffer-summary').textContent = bufferPercent > 0
         ? `Safety buffer of ${formatWhole(bufferPercent)}% adds ${formatWhole(bufferedTotalHours - totalHours)} hours to the estimate.`
@@ -479,8 +540,18 @@
       badge.className = `badge ${tshirt.toLowerCase()}`;
       badge.textContent = tshirt;
 
-      updateEstimateOverview(bufferedTotalHours, tshirt);
-      renderTimeline(totalWeeks, tshirt);
+      updateEstimateOverview(bufferedTotalHours, tshirt, ratio);
+      renderTimeline(totalWeeks, tshirt, ratio);
+
+      const fteRows = ratio !== 1 ? `
+        <tr>
+          <th>FTE ratio</th>
+          <td>${ratio.toFixed(2)}</td>
+        </tr>
+        <tr>
+          <th>Adjusted timeline</th>
+          <td>${getAdjustedTimelineRange(tshirt, ratio)}</td>
+        </tr>` : '';
 
       document.getElementById('hours-summary').innerHTML = `
         <tr>
@@ -494,7 +565,7 @@
         <tr>
           <th>Estimated timeline</th>
           <td>${getTimelineRange(tshirt)}</td>
-        </tr>`;
+        </tr>${fteRows}`;
 
       document.getElementById('rows').innerHTML = chosen.map(c => `
         <tr>
@@ -529,8 +600,41 @@
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
         bufferInput.value = 0;
+        fteRoles = [];
+        renderFTERoles();
         calculate();
       });
+    });
+
+    document.getElementById('add-role-btn').addEventListener('click', () => {
+      fteRoles.push({ name: '', percent: 70 });
+      renderFTERoles();
+      calculate();
+    });
+
+    document.getElementById('fte-roles-list').addEventListener('input', (e) => {
+      const nameIdx = e.target.dataset.fteName;
+      const pctIdx = e.target.dataset.ftePct;
+      if (nameIdx !== undefined) {
+        fteRoles[Number(nameIdx)].name = e.target.value;
+        // Don't re-render DOM to preserve focus/cursor position
+      } else if (pctIdx !== undefined) {
+        fteRoles[Number(pctIdx)].percent = Math.max(1, Number(e.target.value) || 1);
+        const sum = fteRoles.reduce((acc, r) => acc + (r.percent || 0), 0);
+        const ratio = getFTERatio();
+        document.getElementById('fte-ratio-summary').textContent =
+          `Total: ${sum}% → ratio ${ratio.toFixed(2)} (÷ 0.8 parallel factor)`;
+      }
+      calculate();
+    });
+
+    document.getElementById('fte-roles-list').addEventListener('click', (e) => {
+      const removeIdx = e.target.dataset.fteRemove;
+      if (removeIdx !== undefined) {
+        fteRoles.splice(Number(removeIdx), 1);
+        renderFTERoles();
+        calculate();
+      }
     });
 
     (function(){
