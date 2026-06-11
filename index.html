@@ -42,6 +42,7 @@
     .summary-list{display:grid;gap:var(--space-2);padding:0;margin:0} .summary-list li{list-style:none} .summary-list details{border-radius:var(--radius-md);background:var(--color-surface-offset);padding:.85rem 1rem} .summary-list summary{cursor:pointer;font-weight:700}
     .summary-stack{display:grid;gap:var(--space-4)} .summary-stack>details{border:1px solid var(--color-divider);border-radius:var(--radius-lg);background:var(--color-surface-offset);overflow:hidden} .summary-stack>details>summary{padding:1rem 1.1rem;cursor:pointer;font-weight:700} .summary-detail{display:grid;gap:.75rem;padding:0 1.1rem 1rem}.summary-card{padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-offset)} .summary-card table{width:100%;border-collapse:collapse} .summary-card th,.summary-card td{text-align:left;padding:.45rem 0;vertical-align:top;border-bottom:1px solid var(--color-divider)} .summary-card tr:last-child th,.summary-card tr:last-child td{border-bottom:none} .summary-metric{color:var(--color-text-muted);font-size:var(--text-sm)} .impact-flag{display:inline-flex;align-items:center;padding:.25rem .6rem;border-radius:999px;background:var(--color-primary-soft);color:var(--color-primary-strong);font-size:var(--text-sm);font-weight:700}
     .timeline-total{margin-bottom:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)} .timeline-chart{display:grid;gap:var(--space-3)} .timeline-row{display:grid;grid-template-columns:160px 1fr;gap:var(--space-3);align-items:center} .timeline-bar-track{position:relative;height:12px;border-radius:999px;background:var(--color-surface-2);overflow:hidden} .timeline-bar-range{position:absolute;top:0;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary),var(--color-accent))}
+    .resource-team{display:grid;gap:var(--space-3)} .resource-role{display:grid;grid-template-columns:1fr 120px auto;gap:var(--space-2);align-items:center} .resource-input,.resource-percent{border:1px solid var(--color-border);background:var(--color-surface);border-radius:12px;padding:.55rem .7rem;color:var(--color-text)} .resource-actions{display:flex;justify-content:space-between;align-items:center;gap:var(--space-2)} .resource-add,.resource-remove{border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);border-radius:12px;padding:.5rem .7rem;cursor:pointer;font-weight:700}
     @media (max-width: 980px){.app-grid,.app-grid.has-result{grid-template-columns:1fr}.result{position:sticky;top:1rem;height:auto;max-height:calc(100vh - 2rem)}.result-scroll{overflow-y:auto;padding-right:0}} @media (max-width:720px){.container{width:min(100% - 1.25rem,1180px)}.score-pair,.mini-grid{grid-template-columns:1fr}.timeline-row{grid-template-columns:1fr}.section-adjustment label,.buffer-row,.range-title,.header-inner{grid-template-columns:1fr;display:grid;justify-content:stretch}.theme-toggle{justify-content:center}}
   </style>
 </head>
@@ -147,6 +148,16 @@
             </div>
 
             <div class="summary-stack">
+              <div class="summary-card">
+                <h4>Team allocation (FTE)</h4>
+                <div class="resource-team">
+                  <div id="resource-roles"></div>
+                  <div class="resource-actions">
+                    <button type="button" id="add-resource-role" class="resource-add">+ Add role</button>
+                    <span class="summary-metric">Capacity ratio = total utilization / 80%</span>
+                  </div>
+                </div>
+              </div>
 
               <div class="summary-card">
                 <h4>Estimated totals</h4>
@@ -188,6 +199,7 @@
       { label: 'UAT', percent: 0.1 },
       { label: 'Documentation and Closeout', percent: 0.1 }
     ];
+    const PARALLEL_EFFICIENCY = 0.8;
 
     const tshirtBands = [
       { label: 'XS', from: 49, to: 120 },
@@ -332,25 +344,30 @@
       return `${band.label} (${formatWhole(band.from)}-${formatWhole(band.to)})`;
     }
 
-    function calculateTimelineWeeks(hours) {
-      return roundUp((hours / 0.7) / 40);
+    function calculateTimelineWeeks(hours, capacityRatio = 1) {
+      const safeRatio = Math.max(capacityRatio || 1, 0.01);
+      const baselineWeeks = roundUp((hours / 0.7) / 40);
+      return roundUp(baselineWeeks / safeRatio);
     }
 
-    function getTimelineRange(tshirt) {
+    function getTimelineRange(tshirt, capacityRatio = 1) {
       const band = tshirtBands.find(b => b.label === tshirt);
       if (!band) return '—';
-      const minWeeks = Math.ceil((band.from / 0.7) / 40);
+      const safeRatio = Math.max(capacityRatio || 1, 0.01);
+      const baselineMinWeeks = Math.ceil((band.from / 0.7) / 40);
+      const minWeeks = Math.ceil(baselineMinWeeks / safeRatio);
       if (band.to === Infinity) return `${minWeeks}+ weeks`;
-      const maxWeeks = Math.floor((band.to / 0.7) / 40);
+      const baselineMaxWeeks = Math.floor((band.to / 0.7) / 40);
+      const maxWeeks = Math.max(minWeeks, Math.floor(baselineMaxWeeks / safeRatio));
       return `${minWeeks}–${maxWeeks} weeks`;
     }
 
-    function renderTimeline(totalWeeks, tshirt) {
+    function renderTimeline(totalWeeks, timelineRange, resourcePlan) {
       const timelineSummary = document.getElementById('timeline-summary');
       const timelineTotal = document.getElementById('timeline-total');
       const maxWeeks = Math.max(totalWeeks, 1);
 
-      timelineTotal.textContent = `Total estimated timeline: ${getTimelineRange(tshirt)}`;
+      timelineTotal.textContent = `Total estimated timeline: ${timelineRange} · utilization: ${resourcePlan.totalUtilizationPercent}% · ratio: ${resourcePlan.capacityRatio.toFixed(2)}`;
 
       let currentStart = 0;
       timelineSummary.innerHTML = timelinePhases.map(phase => {
@@ -402,8 +419,47 @@
     });
 
     const bufferInput = document.getElementById('buffer');
+    const resourceRolesRoot = document.getElementById('resource-roles');
+    const addResourceRoleButton = document.getElementById('add-resource-role');
+    let resourceRoleIndex = 0;
 
-    function updateEstimateOverview(totalHours, tshirt) {
+    function addResourceRole(roleName = '', percent = 80) {
+      resourceRoleIndex += 1;
+      const row = document.createElement('div');
+      row.className = 'resource-role';
+      row.dataset.resourceRole = String(resourceRoleIndex);
+      row.innerHTML = `
+        <input class="resource-input" type="text" placeholder="Role (e.g. Data Engineer)" value="${roleName}">
+        <div class="multiplier-field">
+          <input class="resource-percent" type="number" min="0" max="300" step="5" value="${percent}">
+          <span class="buffer-note">%</span>
+        </div>
+        <button type="button" class="resource-remove" aria-label="Remove role">×</button>`;
+      resourceRolesRoot.appendChild(row);
+    }
+
+    function resetResourceRoles() {
+      resourceRolesRoot.innerHTML = '';
+      addResourceRole('', 80);
+    }
+
+    function getResourcePlan() {
+      const rows = Array.from(resourceRolesRoot.querySelectorAll('[data-resource-role]'));
+      const totalUtilizationPercent = rows.reduce((sum, row) => {
+        const value = Number(row.querySelector('.resource-percent')?.value || 0);
+        return sum + Math.max(0, value);
+      }, 0);
+      const totalUtilization = totalUtilizationPercent / 100;
+      const capacityRatio = totalUtilization > 0
+        ? totalUtilization / PARALLEL_EFFICIENCY
+        : 1;
+      return {
+        totalUtilizationPercent: roundUp(totalUtilizationPercent),
+        capacityRatio
+      };
+    }
+
+    function updateEstimateOverview(totalHours, tshirt, capacityRatio) {
       const nextMarker = document.getElementById('next-tier-marker');
       const nextTierLabel = document.getElementById('next-tier-label');
       const currentTierNote = document.getElementById('current-tier-note');
@@ -412,8 +468,8 @@
       const maxBarHours = 2000;
       document.getElementById('bar').style.width = Math.min(100, (totalHours / maxBarHours) * 100) + '%';
       currentTierNote.textContent = `Estimated range: ${getTshirtRange(tshirt)}`;
-      nextTierNote.textContent = getTimelineRange(tshirt);
-      scoreGapNote.textContent = `Estimated timeline: ${getTimelineRange(tshirt)}`;
+      nextTierNote.textContent = getTimelineRange(tshirt, capacityRatio);
+      scoreGapNote.textContent = `Estimated timeline: ${getTimelineRange(tshirt, capacityRatio)}`;
 
       const currentBandIndex = tshirtBands.findIndex(b => b.label === tshirt);
       const nextBand = currentBandIndex >= 0 && currentBandIndex < tshirtBands.length - 1
@@ -464,12 +520,14 @@
 
       const bufferPercent = Math.max(0, Number(bufferInput.value) || 0);
       const bufferedTotalHours = multiplyHours(totalHours, 1 + bufferPercent / 100);
-      const totalWeeks = calculateTimelineWeeks(bufferedTotalHours);
+      const resourcePlan = getResourcePlan();
+      const totalWeeks = calculateTimelineWeeks(bufferedTotalHours, resourcePlan.capacityRatio);
       const tshirt = getTshirt(bufferedTotalHours);
       const tshirtRange = getTshirtRange(tshirt);
+      const timelineRange = getTimelineRange(tshirt, resourcePlan.capacityRatio);
 
       document.getElementById('score-range').textContent = tshirtRange;
-      document.getElementById('score-weeks').textContent = getTimelineRange(tshirt);
+      document.getElementById('score-weeks').textContent = timelineRange;
       document.getElementById('narrative').textContent = 'Transformation complexity is derived from the selected Objects to ingest estimate using the formula shown in each transformation option.';
       document.getElementById('buffer-summary').textContent = bufferPercent > 0
         ? `Safety buffer of ${formatWhole(bufferPercent)}% adds ${formatWhole(bufferedTotalHours - totalHours)} hours to the estimate.`
@@ -479,8 +537,8 @@
       badge.className = `badge ${tshirt.toLowerCase()}`;
       badge.textContent = tshirt;
 
-      updateEstimateOverview(bufferedTotalHours, tshirt);
-      renderTimeline(totalWeeks, tshirt);
+      updateEstimateOverview(bufferedTotalHours, tshirt, resourcePlan.capacityRatio);
+      renderTimeline(totalWeeks, timelineRange, resourcePlan);
 
       document.getElementById('hours-summary').innerHTML = `
         <tr>
@@ -492,8 +550,16 @@
           <td>${tshirtRange}</td>
         </tr>
         <tr>
+          <th>Total resource utilization</th>
+          <td>${formatWhole(resourcePlan.totalUtilizationPercent)}%</td>
+        </tr>
+        <tr>
+          <th>Parallel capacity ratio</th>
+          <td>${resourcePlan.capacityRatio.toFixed(2)}</td>
+        </tr>
+        <tr>
           <th>Estimated timeline</th>
-          <td>${getTimelineRange(tshirt)}</td>
+          <td>${timelineRange}</td>
         </tr>`;
 
       document.getElementById('rows').innerHTML = chosen.map(c => `
@@ -523,12 +589,33 @@
       if (event.target.matches('input[type="radio"], input[data-section-multiplier]')) calculate();
     });
     bufferInput.addEventListener('input', calculate);
+    addResourceRoleButton.addEventListener('click', () => {
+      addResourceRole('', 0);
+      calculate();
+    });
+    resourceRolesRoot.addEventListener('click', (event) => {
+      if (!event.target.matches('.resource-remove')) return;
+      const rows = resourceRolesRoot.querySelectorAll('[data-resource-role]');
+      if (rows.length > 1) {
+        event.target.closest('[data-resource-role]')?.remove();
+      } else {
+        const percentInput = rows[0]?.querySelector('.resource-percent');
+        const roleInput = rows[0]?.querySelector('.resource-input');
+        if (percentInput) percentInput.value = '0';
+        if (roleInput) roleInput.value = '';
+      }
+      calculate();
+    });
+    resourceRolesRoot.addEventListener('input', (event) => {
+      if (event.target.matches('.resource-input, .resource-percent')) calculate();
+    });
     document.querySelectorAll('input[data-section-multiplier]').forEach(input => {
       input.addEventListener('input', calculate);
     });
     document.getElementById('form').addEventListener('reset', () => {
       requestAnimationFrame(() => {
         bufferInput.value = 0;
+        resetResourceRoles();
         calculate();
       });
     });
@@ -547,6 +634,7 @@
       draw();
     })();
 
+    resetResourceRoles();
     calculate();
   </script>
 </body>
