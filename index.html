@@ -92,7 +92,6 @@
           </ul>
           <div id="questions"></div>
           <div class="actions">
-            <button type="button" class="btn btn-primary" id="calculate">Calculate size</button>
             <button type="reset" class="btn" id="reset">Reset</button>
           </div>
         </form>
@@ -604,7 +603,6 @@
         </div>`).join('');
     }
 
-    document.getElementById('calculate').addEventListener('click', calculate);
     document.getElementById('form').addEventListener('change', (event) => {
       if (event.target.matches('input[type="radio"], input[data-section-multiplier]')) calculate();
     });
